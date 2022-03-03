@@ -12,6 +12,7 @@
   <packaging>jar</packaging>
 
   <dependencies>
+
     <dependency>
       <groupId>com.zlz.website</groupId>
       <artifactId>blog.common</artifactId>

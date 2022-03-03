@@ -18,9 +18,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.zlz.basic</groupId>
+      <artifactId>basic</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>${mybatis-plus.version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
