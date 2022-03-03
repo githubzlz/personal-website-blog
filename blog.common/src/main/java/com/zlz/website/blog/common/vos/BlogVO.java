@@ -1,9 +1,10 @@
-package com.zlz.website.blog.common.dos;
+package com.zlz.website.blog.common.vos;
 
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * blog
@@ -11,7 +12,7 @@ import java.util.Date;
  * @author
  */
 @Data
-public class BlogDO implements Serializable {
+public class BlogVO implements Serializable {
     /**
      * id
      */
@@ -82,5 +83,9 @@ public class BlogDO implements Serializable {
      */
     private Date modifiedTime;
 
-    private static final long serialVersionUID = 1L;
+    /**
+     * 文章标签
+     */
+    private List<TagVO>  tags;
+
 }

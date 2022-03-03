@@ -1,4 +1,4 @@
-package com.zlz.website.blog.common.dos;
+package com.zlz.website.blog.common.vos;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  * @author zhulinzhong
  */
 @Data
-public class TagDO implements Serializable {
+public class TagVO implements Serializable {
 
     private Long id;
 
