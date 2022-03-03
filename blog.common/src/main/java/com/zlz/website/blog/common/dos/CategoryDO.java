@@ -19,7 +19,7 @@ public class CategoryDO implements Serializable {
     /**
      * 分类等级
      */
-    private Byte level;
+    private Integer level;
 
     private String levelCode;
 
@@ -44,14 +44,14 @@ public class CategoryDO implements Serializable {
     private String imageUrl;
 
     /**
-     * 0 不发布 1发布
+     * 0 发布 1不发布
      */
-    private Boolean isPublish;
+    private Integer isPublish;
 
     /**
      * 0 未删除 1 删除
      */
-    private Boolean isDeleted;
+    private Integer isDeleted;
 
     /**
      * 创建人

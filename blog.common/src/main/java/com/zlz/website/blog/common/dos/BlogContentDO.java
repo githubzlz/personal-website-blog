@@ -6,61 +6,50 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * blog
- *
- * @author
+ * blog_content
+ * @author 
  */
 @Data
-public class BlogDO implements Serializable {
+public class BlogContentDO implements Serializable {
     /**
      * id
      */
     private Long id;
 
     /**
-     * 作者id
+     * 文章
      */
-    private Long userId;
+    private Long blogId;
+
+    /**
+     * 文章md信息
+     */
+    private String contentMd;
+
+    /**
+     * 编辑器类型：0:editormd
+     */
+    private Byte editorType;
 
     /**
      * 文章名
      */
-    private String title;
+    private String note;
 
     /**
-     * 出处：0原创 1转载 2翻译
+     * 版本
      */
-    private Integer provenance;
+    private Integer version;
 
     /**
-     * 文章名
+     * 状态：0:生效 1:失效
      */
-    private Integer visibleStrategy;
-
-    /**
-     * 文章图片路径
-     */
-    private String imgSrc;
-
-    /**
-     * 点赞数量
-     */
-    private Integer stars;
-
-    /**
-     * 阅读量
-     */
-    private Integer readings;
-
-    /**
-     * 0 发布 1不发布
-     */
-    private Integer isPublish;
+    private Byte state;
 
     /**
      * 状态,0:未删除，1:已删除
      */
-    private Integer isDeleted;
+    private Byte isDeleted;
 
     /**
      * 创建人

@@ -26,9 +26,9 @@ public class TagDO implements Serializable {
     private String code;
 
     /**
-     * 0 不发布 1发布
+     * 0 展示 1 隐藏
      */
-    private Integer isPublish;
+    private Integer isShow;
 
     private Long creator;
 
