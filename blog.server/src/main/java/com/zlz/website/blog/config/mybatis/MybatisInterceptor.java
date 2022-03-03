@@ -1,4 +1,4 @@
-package com.zlz.website.blog.mybatis;
+package com.zlz.website.blog.config.mybatis;
 
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -25,9 +25,8 @@ public class MybatisInterceptor implements Interceptor {
     public Object intercept(Invocation invocation) throws Throwable {
         MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
         BoundSql boundSql = mappedStatement.getBoundSql(invocation.getArgs()[1]);
-        Object result = invocation.proceed();
-        System.out.println("Invocation.proceed()");
-        return result;
+        // TODO 定义拦截器功能
+        return invocation.proceed();
     }
 
     @Override
@@ -37,6 +36,5 @@ public class MybatisInterceptor implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
-
     }
 }

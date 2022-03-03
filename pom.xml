@@ -8,6 +8,7 @@
     <module>blog.common</module>
     <module>blog.client</module>
   </modules>
+
   <parent>
     <groupId>com.zlz.basic</groupId>
     <artifactId>basic-spring-project</artifactId>

@@ -1,6 +1,6 @@
 package com.zlz.website.blog.tag.mapper;
 
-import com.zlz.website.blog.common.TagDO;
+import com.zlz.website.blog.common.dos.TagDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

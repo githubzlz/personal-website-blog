@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlz.website.blog.blog.mapper.BlogMapper">
+  <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.dos.BlogDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="provenance" jdbcType="TINYINT" property="provenance" />
+    <result column="visible_strategy" jdbcType="TINYINT" property="visibleStrategy" />
+    <result column="img_src" jdbcType="VARCHAR" property="imgSrc" />
+    <result column="is_show" jdbcType="TINYINT" property="isShow" />
+    <result column="stars" jdbcType="INTEGER" property="stars" />
+    <result column="readings" jdbcType="INTEGER" property="readings" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="creator" jdbcType="BIGINT" property="creator" />
+    <result column="operator" jdbcType="BIGINT" property="operator" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, title, provenance, visible_strategy, img_src, is_show, stars, readings,
+    is_deleted, creator, `operator`, created_time, modified_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from blog
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from blog
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogDO" useGeneratedKeys="true">
+    insert into blog (user_id, title, provenance,
+      visible_strategy, img_src, is_show,
+      stars, readings, is_deleted,
+      creator, `operator`, created_time,
+      modified_time)
+    values (#{userId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{provenance,jdbcType=TINYINT},
+      #{visibleStrategy,jdbcType=TINYINT}, #{imgSrc,jdbcType=VARCHAR}, #{isShow,jdbcType=TINYINT},
+      #{stars,jdbcType=INTEGER}, #{readings,jdbcType=INTEGER}, #{isDeleted,jdbcType=TINYINT},
+      #{creator,jdbcType=BIGINT}, #{operator,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP},
+      #{modifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogDO" useGeneratedKeys="true">
+    insert into blog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="provenance != null">
+        provenance,
+      </if>
+      <if test="visibleStrategy != null">
+        visible_strategy,
+      </if>
+      <if test="imgSrc != null">
+        img_src,
+      </if>
+      <if test="isShow != null">
+        is_show,
+      </if>
+      <if test="stars != null">
+        stars,
+      </if>
+      <if test="readings != null">
+        readings,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="modifiedTime != null">
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="provenance != null">
+        #{provenance,jdbcType=TINYINT},
+      </if>
+      <if test="visibleStrategy != null">
+        #{visibleStrategy,jdbcType=TINYINT},
+      </if>
+      <if test="imgSrc != null">
+        #{imgSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null">
+        #{isShow,jdbcType=TINYINT},
+      </if>
+      <if test="stars != null">
+        #{stars,jdbcType=INTEGER},
+      </if>
+      <if test="readings != null">
+        #{readings,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=BIGINT},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedTime != null">
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zlz.website.blog.common.dos.BlogDO">
+    update blog
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="provenance != null">
+        provenance = #{provenance,jdbcType=TINYINT},
+      </if>
+      <if test="visibleStrategy != null">
+        visible_strategy = #{visibleStrategy,jdbcType=TINYINT},
+      </if>
+      <if test="imgSrc != null">
+        img_src = #{imgSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null">
+        is_show = #{isShow,jdbcType=TINYINT},
+      </if>
+      <if test="stars != null">
+        stars = #{stars,jdbcType=INTEGER},
+      </if>
+      <if test="readings != null">
+        readings = #{readings,jdbcType=INTEGER},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=TINYINT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=BIGINT},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedTime != null">
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zlz.website.blog.common.dos.BlogDO">
+    update blog
+    set user_id = #{userId,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      provenance = #{provenance,jdbcType=TINYINT},
+      visible_strategy = #{visibleStrategy,jdbcType=TINYINT},
+      img_src = #{imgSrc,jdbcType=VARCHAR},
+      is_show = #{isShow,jdbcType=TINYINT},
+      stars = #{stars,jdbcType=INTEGER},
+      readings = #{readings,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      creator = #{creator,jdbcType=BIGINT},
+      `operator` = #{operator,jdbcType=BIGINT},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

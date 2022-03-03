@@ -1,4 +1,4 @@
-package com.zlz.website.blog.common;
+package com.zlz.website.blog.common.dos;
 
 import java.io.Serializable;
 import java.util.Date;

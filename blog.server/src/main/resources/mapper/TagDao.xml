@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlz.website.blog.tag.mapper.TagMapper">
-  <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.TagDO">
+  <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.dos.TagDO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="code" jdbcType="VARCHAR" property="code" />
@@ -32,7 +32,7 @@
     delete from tag
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.TagDO" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.TagDO" useGeneratedKeys="true">
     insert into tag (`name`, code, is_publish, 
       creator, created_time, last_modifier, 
       last_modified_time)
@@ -40,7 +40,7 @@
       #{creator,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP}, #{lastModifier,jdbcType=BIGINT}, 
       #{lastModifiedTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.TagDO" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.TagDO" useGeneratedKeys="true">
     insert into tag
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -89,7 +89,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zlz.website.blog.common.TagDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.zlz.website.blog.common.dos.TagDO">
     update tag
     <set>
       <if test="name != null">
@@ -116,7 +116,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zlz.website.blog.common.TagDO">
+  <update id="updateByPrimaryKey" parameterType="com.zlz.website.blog.common.dos.TagDO">
     update tag
     set `name` = #{name,jdbcType=VARCHAR},
       code = #{code,jdbcType=VARCHAR},

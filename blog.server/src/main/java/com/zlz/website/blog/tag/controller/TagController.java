@@ -1,6 +1,6 @@
 package com.zlz.website.blog.tag.controller;
 
-import com.zlz.website.blog.common.TagDO;
+import com.zlz.website.blog.common.dos.TagDO;
 import com.zlz.website.blog.tag.mapper.TagMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
