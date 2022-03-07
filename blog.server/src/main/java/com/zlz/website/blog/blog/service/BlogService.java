@@ -28,15 +28,7 @@ public interface BlogService {
      * @param blog 文章修改请求参数
      * @return base resp
      */
-    ResultSet<Long> modifyBlogSimpInfo(BlogEditReq blog);
-
-    /**
-     * 修改文章内容
-     *
-     * @param blog 文章修改请求参数
-     * @return base resp
-     */
-    ResultSet<Long> modifyBlogContent(BlogEditReq blog);
+    ResultSet<Long> modifyBlog(BlogEditReq blog);
 
     /**
      * 查询文章信息

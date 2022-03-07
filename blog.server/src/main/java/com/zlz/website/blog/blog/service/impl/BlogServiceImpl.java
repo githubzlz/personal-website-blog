@@ -1,15 +1,20 @@
 package com.zlz.website.blog.blog.service.impl;
 
 import com.zlz.basic.response.ResultSet;
+import com.zlz.website.blog.blog.BlogBuilder;
 import com.zlz.website.blog.blog.mapper.BlogContentMapper;
 import com.zlz.website.blog.blog.mapper.BlogMapper;
 import com.zlz.website.blog.blog.service.BlogService;
+import com.zlz.website.blog.common.dos.BlogContentDO;
 import com.zlz.website.blog.common.dos.BlogDO;
+import com.zlz.website.blog.common.dtos.BlogContentEditDTO;
 import com.zlz.website.blog.common.param.BlogParam;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
 import com.zlz.website.blog.common.resp.blog.BlogSimpleResp;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,17 +34,21 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public ResultSet<Long> createBlog(BlogEditReq req) {
-        return null;
+        Date date = new Date();
+        BlogDO blog = BlogBuilder.buildBlogDO(req, date);
+        blogMapper.insert(blog);
+        BlogContentDO blogContent = BlogBuilder.buildBlogContentDO(blog.getId(), req.getBlogContent(), date);
+        blogContentMapper.insert(blogContent);
+        return ResultSet.success(blog.getId());
     }
 
     @Override
-    public ResultSet<Long> modifyBlogSimpInfo(BlogEditReq blog) {
+    public ResultSet<Long> modifyBlog(BlogEditReq blog) {
         return null;
     }
 
-    @Override
-    public ResultSet<Long> modifyBlogContent(BlogEditReq blog) {
-        return null;
+    private boolean modifyBlogContent(BlogContentEditDTO dto) {
+        return false;
     }
 
     @Override

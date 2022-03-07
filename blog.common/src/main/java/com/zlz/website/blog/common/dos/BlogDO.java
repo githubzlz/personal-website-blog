@@ -33,11 +33,6 @@ public class BlogDO implements Serializable {
     private Integer provenance;
 
     /**
-     * 文章名
-     */
-    private Integer visibleStrategy;
-
-    /**
      * 文章图片路径
      */
     private String imgSrc;
@@ -82,5 +77,4 @@ public class BlogDO implements Serializable {
      */
     private Date modifiedTime;
 
-    private static final long serialVersionUID = 1L;
 }

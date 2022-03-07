@@ -71,5 +71,4 @@ public class BlogContentDO implements Serializable {
      */
     private Date modifiedTime;
 
-    private static final long serialVersionUID = 1L;
 }
