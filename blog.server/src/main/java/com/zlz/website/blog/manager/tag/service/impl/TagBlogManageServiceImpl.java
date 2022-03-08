@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
  * @date 2022-03-03 15:34:53
  */
 @Service
-public class TagBlogManageBlogManageServiceImpl implements TagBlogManageService {
+public class TagBlogManageServiceImpl implements TagBlogManageService {
 }

@@ -2,9 +2,11 @@ package com.zlz.website.blog.blog.mapper;
 
 
 import com.zlz.website.blog.common.dos.BlogContentDO;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface BlogContentMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteById(Long id);
 
     int insert(BlogContentDO record);
 
@@ -14,5 +16,5 @@ public interface BlogContentMapper {
 
     int updateByPrimaryKeySelective(BlogContentDO record);
 
-    int updateByPrimaryKey(BlogContentDO record);
+    BlogContentDO selectLastVersionByBlogId(Long blogId);
 }

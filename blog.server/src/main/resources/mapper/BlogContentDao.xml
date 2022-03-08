@@ -2,44 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlz.website.blog.blog.mapper.BlogContentMapper">
   <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.dos.BlogContentDO">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="blog_id" jdbcType="BIGINT" property="blogId" />
-    <result column="contentMd" jdbcType="VARCHAR" property="contentMd" />
-    <result column="editor_type" jdbcType="TINYINT" property="editorType" />
-    <result column="note" jdbcType="VARCHAR" property="note" />
-    <result column="version" jdbcType="INTEGER" property="version" />
-    <result column="state" jdbcType="TINYINT" property="state" />
-    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
-    <result column="creator" jdbcType="BIGINT" property="creator" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="blog_id" jdbcType="BIGINT" property="blogId"/>
+    <result column="contentMd" jdbcType="VARCHAR" property="contentMd"/>
+    <result column="editor_type" jdbcType="TINYINT" property="editorType"/>
+    <result column="note" jdbcType="VARCHAR" property="note"/>
+    <result column="version" jdbcType="INTEGER" property="version"/>
+    <result column="state" jdbcType="TINYINT" property="state"/>
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+    <result column="creator" jdbcType="BIGINT" property="creator"/>
+    <result column="operator" jdbcType="BIGINT" property="operator"/>
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, blog_id, content_md, editor_type, note, version, `state`, is_deleted, creator,
+    id
+    , blog_id, content_md, editor_type, note, version, `state`, is_deleted, creator,
     `operator`, created_time, modified_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
+    select
+    <include refid="Base_Column_List"/>
     from blog_content
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from blog_content
+  <delete id="deleteById" parameterType="java.lang.Long">
+    UPDATE blog_content
+    SET is_deleted = 1,`state` = 1
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogContentDO" useGeneratedKeys="true">
-    insert into blog_content (blog_id, contentMd, editor_type, 
-      note, version, `state`, 
-      is_deleted, creator, `operator`, 
-      created_time, modified_time)
-    values (#{blogId,jdbcType=BIGINT}, #{contentmd,jdbcType=VARCHAR}, #{editorType,jdbcType=TINYINT}, 
-      #{note,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{state,jdbcType=TINYINT}, 
-      #{isDeleted,jdbcType=TINYINT}, #{creator,jdbcType=BIGINT}, #{operator,jdbcType=BIGINT}, 
-      #{createdTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogContentDO"
+          useGeneratedKeys="true">
+    insert into blog_content (blog_id, contentMd, editor_type,
+                              note, version, `state`,
+                              is_deleted, creator, `operator`,
+                              created_time, modified_time)
+    values (#{blogId,jdbcType=BIGINT}, #{contentmd,jdbcType=VARCHAR}, #{editorType,jdbcType=TINYINT},
+            #{note,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{state,jdbcType=TINYINT},
+            #{isDeleted,jdbcType=TINYINT}, #{creator,jdbcType=BIGINT}, #{operator,jdbcType=BIGINT},
+            #{createdTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogContentDO" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id"
+          parameterType="com.zlz.website.blog.common.dos.BlogContentDO" useGeneratedKeys="true">
     insert into blog_content
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="blogId != null">
@@ -153,17 +157,26 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zlz.website.blog.common.dos.BlogContentDO">
     update blog_content
-    set blog_id = #{blogId,jdbcType=BIGINT},
-      contentMd = #{contentmd,jdbcType=VARCHAR},
-      editor_type = #{editorType,jdbcType=TINYINT},
-      note = #{note,jdbcType=VARCHAR},
-      version = #{version,jdbcType=INTEGER},
-      `state` = #{state,jdbcType=TINYINT},
-      is_deleted = #{isDeleted,jdbcType=TINYINT},
-      creator = #{creator,jdbcType=BIGINT},
-      `operator` = #{operator,jdbcType=BIGINT},
-      created_time = #{createdTime,jdbcType=TIMESTAMP},
-      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    set blog_id       = #{blogId,jdbcType=BIGINT},
+        contentMd     = #{contentmd,jdbcType=VARCHAR},
+        editor_type   = #{editorType,jdbcType=TINYINT},
+        note          = #{note,jdbcType=VARCHAR},
+        version       = #{version,jdbcType=INTEGER},
+        `state`       = #{state,jdbcType=TINYINT},
+        is_deleted    = #{isDeleted,jdbcType=TINYINT},
+        creator       = #{creator,jdbcType=BIGINT},
+        `operator`    = #{operator,jdbcType=BIGINT},
+        created_time  = #{createdTime,jdbcType=TIMESTAMP},
+        modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectLastVersionByBlogId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM blog_content
+    WHERE blog_id = #{blogId}
+    ORDER BY version DESC
+    LIMIT 1
+  </select>
 </mapper>

@@ -4,6 +4,7 @@ import com.zlz.basic.constants.BasicConstants;
 import com.zlz.basic.response.ResultSet;
 import com.zlz.website.blog.blog.service.BlogService;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,8 @@ public class BlogController {
     }
 
     @PostMapping("edit")
-    public ResultSet<Long> modifyBlog(@RequestBody BlogEditReq req) {
+    public ResultSet<Long> modifyBlog(@RequestBody @Validated BlogEditReq req) {
+
         // 新增
         if (Objects.isNull(req.getId()) || BasicConstants.ZERO_LONG.equals(req.getId())) {
             return blogService.createBlog(req);

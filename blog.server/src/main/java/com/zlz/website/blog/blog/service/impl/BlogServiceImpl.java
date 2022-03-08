@@ -1,5 +1,6 @@
 package com.zlz.website.blog.blog.service.impl;
 
+import com.zlz.basic.exception.BizException;
 import com.zlz.basic.response.ResultSet;
 import com.zlz.website.blog.blog.BlogBuilder;
 import com.zlz.website.blog.blog.mapper.BlogContentMapper;
@@ -8,6 +9,8 @@ import com.zlz.website.blog.blog.service.BlogService;
 import com.zlz.website.blog.common.dos.BlogContentDO;
 import com.zlz.website.blog.common.dos.BlogDO;
 import com.zlz.website.blog.common.dtos.BlogContentEditDTO;
+import com.zlz.website.blog.common.exception.BlogBizException;
+import com.zlz.website.blog.common.exception.BlogExceptionEnum;
 import com.zlz.website.blog.common.param.BlogParam;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
 import com.zlz.website.blog.common.resp.blog.BlogSimpleResp;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author zhulinzhong
@@ -37,14 +41,41 @@ public class BlogServiceImpl implements BlogService {
         Date date = new Date();
         BlogDO blog = BlogBuilder.buildBlogDO(req, date);
         blogMapper.insert(blog);
+
+        if (Objects.isNull(req.getBlogContent())) {
+            throw new BlogBizException(BlogExceptionEnum.CREATE_BLOG_CONTENT_CANNOT_BE_NULL);
+        }
         BlogContentDO blogContent = BlogBuilder.buildBlogContentDO(blog.getId(), req.getBlogContent(), date);
         blogContentMapper.insert(blogContent);
         return ResultSet.success(blog.getId());
     }
 
     @Override
-    public ResultSet<Long> modifyBlog(BlogEditReq blog) {
-        return null;
+    public ResultSet<Long> modifyBlog(BlogEditReq req) {
+        Long blogId = req.getId();
+        Date date = new Date();
+        if(req.getUpdate()){
+            BlogDO blog = BlogBuilder.buildBlogDO(req, date);
+            blogMapper.updateByPrimaryKey(blog);
+        }
+        if (Objects.isNull(req.getBlogContent())) {
+            throw new BlogBizException(BlogExceptionEnum.CREATE_BLOG_CONTENT_CANNOT_BE_NULL);
+        }
+
+        // 存在更新
+        // 1.获取最后版本
+        // 2.将最后版本置为无效
+        // 3.插入新版本
+        if (req.getBlogContent().getUpdate()) {
+            BlogContentDO blogContent = BlogBuilder.buildBlogContentDO(blogId, req.getBlogContent(), date);
+            BlogContentDO oldBlogContent = blogContentMapper.selectLastVersionByBlogId(blogId);
+            blogContentMapper.deleteById(oldBlogContent.getId());
+
+            blogContent.setVersion(oldBlogContent.getVersion()+1);
+            blogContentMapper.insert(blogContent);
+
+        }
+        return ResultSet.success(blogId);
     }
 
     private boolean modifyBlogContent(BlogContentEditDTO dto) {

@@ -13,15 +13,12 @@ import java.util.List;
  * @date 2022-03-03 15:34:53
  */
 @Service
-public class CategoryBlogManageServiceBlogManageImpl implements CategoryBlogManageService {
+public class CategoryBlogManageServiceImpl implements CategoryBlogManageService {
 
     private final BlogService blogService;
 
-    private final CategoryBlogManageService categoryBlogManageService;
-
-    public CategoryBlogManageServiceBlogManageImpl(BlogService blogService, CategoryBlogManageService categoryBlogManageService) {
+    public CategoryBlogManageServiceImpl(BlogService blogService) {
         this.blogService = blogService;
-        this.categoryBlogManageService = categoryBlogManageService;
     }
 
 

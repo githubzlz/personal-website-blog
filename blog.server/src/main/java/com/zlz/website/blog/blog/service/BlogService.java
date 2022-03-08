@@ -25,10 +25,10 @@ public interface BlogService {
     /**
      * 修改文章信息
      *
-     * @param blog 文章修改请求参数
+     * @param req 文章修改请求参数
      * @return base resp
      */
-    ResultSet<Long> modifyBlog(BlogEditReq blog);
+    ResultSet<Long> modifyBlog(BlogEditReq req);
 
     /**
      * 查询文章信息

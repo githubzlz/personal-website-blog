@@ -8,6 +8,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: zhulinzhong
     password: zhulinzhong
-gateway:
+route:
   host: test.asd
   port: 8080

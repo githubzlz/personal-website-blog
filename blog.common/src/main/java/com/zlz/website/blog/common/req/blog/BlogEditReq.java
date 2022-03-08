@@ -3,6 +3,8 @@ package com.zlz.website.blog.common.req.blog;
 import com.zlz.website.blog.common.dtos.BlogContentEditDTO;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author zhulinzhong
  * @date 2022-03-03 15:16:29
@@ -13,6 +15,7 @@ public class BlogEditReq {
     /**
      * id
      */
+    @NotNull(message = "文章id不允许为空")
     private Long id;
 
     /**
@@ -44,4 +47,11 @@ public class BlogEditReq {
      * 文章内容
      */
     private BlogContentEditDTO blogContent;
+
+    /**
+     * 是否存在修改
+     */
+    @NotNull(message = "是否更新文章字段不允许为空")
+    private Boolean update;
+
 }
