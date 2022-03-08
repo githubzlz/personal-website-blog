@@ -1,33 +1,26 @@
-package com.zlz.website.blog.common.enums.article;
+package com.zlz.website.blog.common.enums.blog;
 
 /**
- * @author wb_zhulinzhong
- * @date 2021-06-08 11:52:32
+ * @author zhulinzhong
+ * @version 1.0 CreateTime:2020-07-08 09:44
+ * @description 操作类型
  */
-public enum BlogShowEnum {
+public enum OperateTypeEnum {
 
     /**
-     * 不展示
+     * 管理列表
      */
-    SHOW(0, "不展示"),
+    MANAGEMENT(0, "管理列表"),
 
     /**
-     * 展示
+     * 使用列表
      */
-    HIDDEN(1, "展示"),
-
-    /**
-     * 自己可见
-     */
-    SELF(2, "自己可见"),
-    ;
-
-
+    USE(1, "使用列表");
     private int code;
     private String name;
 
 
-    BlogShowEnum(int code, String name) {
+    OperateTypeEnum(int code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -40,11 +33,11 @@ public enum BlogShowEnum {
         return name;
     }
 
-    public static BlogShowEnum getEnumByCode(Integer code) {
+    public static OperateTypeEnum getEnumByCode(Integer code) {
         if (null == code) {
             return null;
         }
-        for (BlogShowEnum enum1 : BlogShowEnum.values()) {
+        for (OperateTypeEnum enum1 : OperateTypeEnum.values()) {
             if (enum1.getCode() == code) {
                 return enum1;
             }

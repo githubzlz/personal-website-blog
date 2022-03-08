@@ -1,5 +1,8 @@
 package com.zlz.website.blog.common.dos;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -7,13 +10,16 @@ import java.util.Date;
 
 /**
  * blog_content
- * @author 
+ *
+ * @author
  */
 @Data
+@TableName("blog_content")
 public class BlogContentDO implements Serializable {
     /**
      * id
      */
+    @TableId(type = IdType.ID_WORKER)
     private Long id;
 
     /**
@@ -29,7 +35,7 @@ public class BlogContentDO implements Serializable {
     /**
      * 编辑器类型：0:editormd
      */
-    private Byte editorType;
+    private Integer editorType;
 
     /**
      * 文章名
@@ -44,12 +50,12 @@ public class BlogContentDO implements Serializable {
     /**
      * 状态：0:生效 1:失效
      */
-    private Byte state;
+    private Integer state;
 
     /**
      * 状态,0:未删除，1:已删除
      */
-    private Byte isDeleted;
+    private Integer isDeleted;
 
     /**
      * 创建人

@@ -1,6 +1,7 @@
 package com.zlz.website.blog.blog.mapper;
 
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zlz.website.blog.common.dos.BlogDO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -9,10 +10,8 @@ import org.apache.ibatis.annotations.Mapper;
  * @author zhulinzhong
  */
 @Mapper
-public interface BlogMapper {
+public interface BlogMapper extends BaseMapper<BlogDO> {
     int deleteByPrimaryKey(Long id);
-
-    int insert(BlogDO record);
 
     int insertSelective(BlogDO record);
 

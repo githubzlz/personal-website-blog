@@ -1,5 +1,6 @@
 package com.zlz.website.blog.common.dtos;
 
+import com.zlz.website.blog.common.req.blog.BlogEditReq;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -9,12 +10,12 @@ import javax.validation.constraints.NotNull;
  * @date 2022-03-07 19:35:47
  */
 @Data
-public class BlogContentEditDTO {
+public class BlogContentEditReq {
 
     /**
      * 是否存在文章内容修改
      */
-    @NotNull(message = "是否更新文章内容字段不允许为空")
+    @NotNull(message = "是否更新文章内容字段不允许为空", groups = BlogEditReq.Update.class)
     private Boolean update;
 
     /**
@@ -23,13 +24,15 @@ public class BlogContentEditDTO {
     private Long blogId;
 
     /**
-     * 文章md信息
+     * 文章内容
      */
-    private String contentMd;
+    @NotNull(message = "文章内容不允许为空", groups = BlogEditReq.Create.class)
+    private String content;
 
     /**
      * 编辑器类型：0:editormd
      */
+    @NotNull(message = "编辑器类型不允许为空", groups = BlogEditReq.Create.class)
     private Integer editorType;
 
     /**

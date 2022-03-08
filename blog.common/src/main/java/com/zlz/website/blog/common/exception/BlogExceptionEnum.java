@@ -11,7 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum BlogExceptionEnum {
 
-    CREATE_BLOG_CONTENT_CANNOT_BE_NULL(1000001, "文章内容不允许为空")
+    MODIFY_BLOG_ERROR(1000001, "文章修改失败")
 
     ;
 

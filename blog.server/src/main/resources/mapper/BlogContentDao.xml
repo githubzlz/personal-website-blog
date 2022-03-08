@@ -31,17 +31,6 @@
     SET is_deleted = 1,`state` = 1
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogContentDO"
-          useGeneratedKeys="true">
-    insert into blog_content (blog_id, contentMd, editor_type,
-                              note, version, `state`,
-                              is_deleted, creator, `operator`,
-                              created_time, modified_time)
-    values (#{blogId,jdbcType=BIGINT}, #{contentmd,jdbcType=VARCHAR}, #{editorType,jdbcType=TINYINT},
-            #{note,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, #{state,jdbcType=TINYINT},
-            #{isDeleted,jdbcType=TINYINT}, #{creator,jdbcType=BIGINT}, #{operator,jdbcType=BIGINT},
-            #{createdTime,jdbcType=TIMESTAMP}, #{modifiedTime,jdbcType=TIMESTAMP})
-  </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id"
           parameterType="com.zlz.website.blog.common.dos.BlogContentDO" useGeneratedKeys="true">
     insert into blog_content

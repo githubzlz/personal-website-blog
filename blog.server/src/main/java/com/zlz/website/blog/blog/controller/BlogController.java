@@ -26,7 +26,7 @@ public class BlogController {
         this.blogService = blogService;
     }
 
-    @PostMapping("edit")
+    @PostMapping("/edit")
     public ResultSet<Long> modifyBlog(@RequestBody @Validated BlogEditReq req) {
 
         // 新增

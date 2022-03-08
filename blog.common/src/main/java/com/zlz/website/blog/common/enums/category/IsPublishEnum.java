@@ -11,8 +11,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum IsPublishEnum {
 
-    DISPUBLISH(0, "不发布"),
-    PUBLISHED(1, "发布"),
+    PUBLISHED(0, "发布"),
+    DISPUBLISH(1, "不发布"),
     ;
 
 

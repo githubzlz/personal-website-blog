@@ -2,48 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlz.website.blog.blog.mapper.BlogMapper">
   <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.dos.BlogDO">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="provenance" jdbcType="TINYINT" property="provenance" />
-    <result column="visible_strategy" jdbcType="TINYINT" property="visibleStrategy" />
-    <result column="img_src" jdbcType="VARCHAR" property="imgSrc" />
-    <result column="is_show" jdbcType="TINYINT" property="isShow" />
-    <result column="stars" jdbcType="INTEGER" property="stars" />
-    <result column="readings" jdbcType="INTEGER" property="readings" />
-    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
-    <result column="creator" jdbcType="BIGINT" property="creator" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    <result column="title" jdbcType="VARCHAR" property="title"/>
+    <result column="provenance" jdbcType="TINYINT" property="provenance"/>
+    <result column="visible_strategy" jdbcType="TINYINT" property="visibleStrategy"/>
+    <result column="img_src" jdbcType="VARCHAR" property="imgSrc"/>
+    <result column="is_show" jdbcType="TINYINT" property="isShow"/>
+    <result column="stars" jdbcType="INTEGER" property="stars"/>
+    <result column="readings" jdbcType="INTEGER" property="readings"/>
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+    <result column="creator" jdbcType="BIGINT" property="creator"/>
+    <result column="operator" jdbcType="BIGINT" property="operator"/>
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, title, provenance, visible_strategy, img_src, is_show, stars, readings,
+    id
+    , user_id, title, provenance, visible_strategy, img_src, is_show, stars, readings,
     is_deleted, creator, `operator`, created_time, modified_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List"/>
     from blog
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from blog
+    delete
+    from blog
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogDO" useGeneratedKeys="true">
-    insert into blog (user_id, title, provenance,
-      visible_strategy, img_src, is_show,
-      stars, readings, is_deleted,
-      creator, `operator`, created_time,
-      modified_time)
-    values (#{userId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{provenance,jdbcType=TINYINT},
-      #{visibleStrategy,jdbcType=TINYINT}, #{imgSrc,jdbcType=VARCHAR}, #{isShow,jdbcType=TINYINT},
-      #{stars,jdbcType=INTEGER}, #{readings,jdbcType=INTEGER}, #{isDeleted,jdbcType=TINYINT},
-      #{creator,jdbcType=BIGINT}, #{operator,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP},
-      #{modifiedTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogDO" useGeneratedKeys="true">
+
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogDO"
+          useGeneratedKeys="true">
     insert into blog
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -175,19 +167,19 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zlz.website.blog.common.dos.BlogDO">
     update blog
-    set user_id = #{userId,jdbcType=BIGINT},
-      title = #{title,jdbcType=VARCHAR},
-      provenance = #{provenance,jdbcType=TINYINT},
-      visible_strategy = #{visibleStrategy,jdbcType=TINYINT},
-      img_src = #{imgSrc,jdbcType=VARCHAR},
-      is_show = #{isShow,jdbcType=TINYINT},
-      stars = #{stars,jdbcType=INTEGER},
-      readings = #{readings,jdbcType=INTEGER},
-      is_deleted = #{isDeleted,jdbcType=TINYINT},
-      creator = #{creator,jdbcType=BIGINT},
-      `operator` = #{operator,jdbcType=BIGINT},
-      created_time = #{createdTime,jdbcType=TIMESTAMP},
-      modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+    set user_id          = #{userId,jdbcType=BIGINT},
+        title            = #{title,jdbcType=VARCHAR},
+        provenance       = #{provenance,jdbcType=TINYINT},
+        visible_strategy = #{visibleStrategy,jdbcType=TINYINT},
+        img_src          = #{imgSrc,jdbcType=VARCHAR},
+        is_show          = #{isShow,jdbcType=TINYINT},
+        stars            = #{stars,jdbcType=INTEGER},
+        readings         = #{readings,jdbcType=INTEGER},
+        is_deleted       = #{isDeleted,jdbcType=TINYINT},
+        creator          = #{creator,jdbcType=BIGINT},
+        `operator`       = #{operator,jdbcType=BIGINT},
+        created_time     = #{createdTime,jdbcType=TIMESTAMP},
+        modified_time    = #{modifiedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

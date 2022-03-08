@@ -1,4 +1,4 @@
-package com.zlz.website.blog.common.enums.article;
+package com.zlz.website.blog.common.enums.blog;
 
 /**
  * @author zhulinzhong
