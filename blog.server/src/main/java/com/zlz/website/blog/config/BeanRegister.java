@@ -47,6 +47,7 @@ public class BeanRegister {
 
     /**
      * 封装一层的RedisTemplate，避免强制类型转换错误
+     *
      * @param redisConnectionFactory
      * @return
      */
