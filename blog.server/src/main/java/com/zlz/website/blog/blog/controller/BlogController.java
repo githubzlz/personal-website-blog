@@ -5,10 +5,7 @@ import com.zlz.basic.response.ResultSet;
 import com.zlz.website.blog.blog.service.BlogService;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -36,5 +33,11 @@ public class BlogController {
 
         // 编辑
         return blogService.modifyBlog(req);
+    }
+
+    @PostMapping("/delete/soft")
+    public ResultSet<Boolean> deleteBlog(@RequestParam("id")Long id) {
+        // 删除
+        return blogService.softDeleteBlog(id);
     }
 }

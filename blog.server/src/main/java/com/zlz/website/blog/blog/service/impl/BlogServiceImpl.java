@@ -1,6 +1,10 @@
 package com.zlz.website.blog.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.zlz.basic.constants.BasicConstants;
+import com.zlz.basic.enums.DeletedStatusEnum;
 import com.zlz.basic.response.ResultSet;
+import com.zlz.route.common.trace.TraceContext;
 import com.zlz.website.blog.blog.BlogBuilder;
 import com.zlz.website.blog.blog.mapper.BlogContentMapper;
 import com.zlz.website.blog.blog.mapper.BlogMapper;
@@ -80,10 +84,6 @@ public class BlogServiceImpl implements BlogService {
         return ResultSet.success(blogId);
     }
 
-    private boolean modifyBlogContent(BlogContentEditReq dto) {
-        return false;
-    }
-
     @Override
     public ResultSet<BlogSimpleResp> queryBlogSimpleInfo(Long blogId) {
         return null;
@@ -95,13 +95,35 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public ResultSet<List<BlogDO>> batchQueryBlogContent(BlogParam params) {
+    public ResultSet<List<BlogSimpleResp>> batchQueryBlog(BlogParam params) {
         return null;
     }
 
     @Override
     public ResultSet<Boolean> softDeleteBlog(Long blogId) {
-        return null;
+        // 修改blog
+        BlogDO blogDO = new BlogDO();
+        blogDO.setId(blogId);
+        blogDO.setIsDeleted(DeletedStatusEnum.DELETED.getCode());
+        blogDO.setOperator(TraceContext.getUserId());
+        blogDO.setModifiedTime(new Date());
+        int update = blogMapper.updateById(blogDO);
+        if (BasicConstants.ZERO_INTEGER.equals(update)) {
+            return ResultSet.error();
+        }
+
+        // 修改content
+        BlogContentDO blogContentDO = new BlogContentDO();
+        blogContentDO.setIsDeleted(DeletedStatusEnum.DELETED.getCode());
+        blogContentDO.setOperator(TraceContext.getUserId());
+        blogContentDO.setModifiedTime(new Date());
+        UpdateWrapper<BlogContentDO> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("blog_id", blogId);
+        update = blogContentMapper.update(blogContentDO, updateWrapper);
+        if (BasicConstants.ZERO_INTEGER.equals(update)) {
+            return ResultSet.error();
+        }
+        return ResultSet.success();
     }
 
     @Override
@@ -111,7 +133,11 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public ResultSet<Boolean> deleteBlog(Long blogId) {
-        return null;
+        int i = blogMapper.deleteById(blogId);
+        if (BasicConstants.ZERO_INTEGER.equals(i)) {
+            return ResultSet.error();
+        }
+        return ResultSet.success();
     }
 
     @Override

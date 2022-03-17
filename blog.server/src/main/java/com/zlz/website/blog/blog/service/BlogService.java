@@ -52,7 +52,7 @@ public interface BlogService {
      * @param params 文章查询参数
      * @return base resp
      */
-    ResultSet<List<BlogDO>> batchQueryBlogContent(BlogParam params);
+    ResultSet<List<BlogSimpleResp>> batchQueryBlog(BlogParam params);
 
     /**
      * 软（逻辑）删除文章
