@@ -15,7 +15,7 @@
   <dependencies>
     <dependency>
       <groupId>com.zlz.website</groupId>
-      <artifactId>settings.common</artifactId>
+      <artifactId>blog.common</artifactId>
     </dependency>
   </dependencies>
 
