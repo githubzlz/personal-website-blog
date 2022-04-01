@@ -1,5 +1,9 @@
 package com.zlz.website.blog.common.dos;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -7,13 +11,16 @@ import java.util.Date;
 
 /**
  * category
+ *
  * @author
  */
 @Data
+@TableName("category")
 public class CategoryDO implements Serializable {
     /**
      * 模块id
      */
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

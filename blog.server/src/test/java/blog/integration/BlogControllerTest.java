@@ -1,7 +1,7 @@
 package blog.integration;
 
 import com.zlz.basic.response.ResultSet;
-import com.zlz.website.blog.common.dtos.BlogContentEditReq;
+import com.zlz.website.blog.common.req.blog.BlogContentEditReq;
 import com.zlz.website.blog.common.enums.blog.EditorTypeEnum;
 import com.zlz.website.blog.common.enums.blog.ProvenanceEnum;
 import com.zlz.website.blog.common.enums.category.IsPublishEnum;

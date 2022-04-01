@@ -3,7 +3,7 @@ package com.zlz.website.blog.blog;
 import com.zlz.route.common.trace.TraceContext;
 import com.zlz.website.blog.common.dos.BlogContentDO;
 import com.zlz.website.blog.common.dos.BlogDO;
-import com.zlz.website.blog.common.dtos.BlogContentEditReq;
+import com.zlz.website.blog.common.req.blog.BlogContentEditReq;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
 import org.springframework.beans.BeanUtils;
 

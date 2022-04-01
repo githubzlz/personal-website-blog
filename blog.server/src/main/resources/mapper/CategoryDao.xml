@@ -2,47 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlz.website.blog.category.mapper.CategoryMapper">
   <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.dos.CategoryDO">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="level" jdbcType="TINYINT" property="level" />
-    <result column="level_code" jdbcType="VARCHAR" property="levelCode" />
-    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
-    <result column="is_publish" jdbcType="BOOLEAN" property="isPublish" />
-    <result column="is_deleted" jdbcType="BOOLEAN" property="isDeleted" />
-    <result column="creator" jdbcType="BIGINT" property="creator" />
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="last_modifier" jdbcType="BIGINT" property="lastModifier" />
-    <result column="last_modified_time" jdbcType="TIMESTAMP" property="lastModifiedTime" />
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="level" jdbcType="TINYINT" property="level"/>
+    <result column="level_code" jdbcType="VARCHAR" property="levelCode"/>
+    <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+    <result column="title" jdbcType="VARCHAR" property="title"/>
+    <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+    <result column="is_publish" jdbcType="BOOLEAN" property="isPublish"/>
+    <result column="is_deleted" jdbcType="BOOLEAN" property="isDeleted"/>
+    <result column="creator" jdbcType="BIGINT" property="creator"/>
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    <result column="last_modifier" jdbcType="BIGINT" property="lastModifier"/>
+    <result column="last_modified_time" jdbcType="TIMESTAMP" property="lastModifiedTime"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, `level`, level_code, parent_id, title, introduction, image_url, is_publish, is_deleted, 
+    id
+    , `level`, level_code, parent_id, title, introduction, image_url, is_publish, is_deleted,
     creator, created_time, last_modifier, last_modified_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
+    select
+    <include refid="Base_Column_List"/>
     from category
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from category
+    delete
+    from category
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.CategoryDO" useGeneratedKeys="true">
-    insert into category (`level`, level_code, parent_id, 
-      title, introduction, image_url, 
-      is_publish, is_deleted, creator, 
-      created_time, last_modifier, last_modified_time
-      )
-    values (#{level,jdbcType=TINYINT}, #{levelCode,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, 
-      #{title,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, 
-      #{isPublish,jdbcType=BOOLEAN}, #{isDeleted,jdbcType=BOOLEAN}, #{creator,jdbcType=BIGINT}, 
-      #{createdTime,jdbcType=TIMESTAMP}, #{lastModifier,jdbcType=BIGINT}, #{lastModifiedTime,jdbcType=TIMESTAMP}
-      )
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.CategoryDO"
+          useGeneratedKeys="true">
+    insert into category (`level`, level_code, parent_id,
+                          title, introduction, image_url,
+                          is_publish, is_deleted, creator,
+                          created_time, last_modifier, last_modified_time)
+    values (#{level,jdbcType=TINYINT}, #{levelCode,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT},
+            #{title,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR},
+            #{isPublish,jdbcType=BOOLEAN}, #{isDeleted,jdbcType=BOOLEAN}, #{creator,jdbcType=BIGINT},
+            #{createdTime,jdbcType=TIMESTAMP}, #{lastModifier,jdbcType=BIGINT}, #{lastModifiedTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.CategoryDO" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id"
+          parameterType="com.zlz.website.blog.common.dos.CategoryDO" useGeneratedKeys="true">
     insert into category
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="level != null">
@@ -165,18 +167,64 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zlz.website.blog.common.dos.CategoryDO">
     update category
-    set `level` = #{level,jdbcType=TINYINT},
-      level_code = #{levelCode,jdbcType=VARCHAR},
-      parent_id = #{parentId,jdbcType=BIGINT},
-      title = #{title,jdbcType=VARCHAR},
-      introduction = #{introduction,jdbcType=VARCHAR},
-      image_url = #{imageUrl,jdbcType=VARCHAR},
-      is_publish = #{isPublish,jdbcType=BOOLEAN},
-      is_deleted = #{isDeleted,jdbcType=BOOLEAN},
-      creator = #{creator,jdbcType=BIGINT},
-      created_time = #{createdTime,jdbcType=TIMESTAMP},
-      last_modifier = #{lastModifier,jdbcType=BIGINT},
-      last_modified_time = #{lastModifiedTime,jdbcType=TIMESTAMP}
+    set `level`            = #{level,jdbcType=TINYINT},
+        level_code         = #{levelCode,jdbcType=VARCHAR},
+        parent_id          = #{parentId,jdbcType=BIGINT},
+        title              = #{title,jdbcType=VARCHAR},
+        introduction       = #{introduction,jdbcType=VARCHAR},
+        image_url          = #{imageUrl,jdbcType=VARCHAR},
+        is_publish         = #{isPublish,jdbcType=BOOLEAN},
+        is_deleted         = #{isDeleted,jdbcType=BOOLEAN},
+        creator            = #{creator,jdbcType=BIGINT},
+        created_time       = #{createdTime,jdbcType=TIMESTAMP},
+        last_modifier      = #{lastModifier,jdbcType=BIGINT},
+        last_modified_time = #{lastModifiedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <sql id="Where_Param">
+    <where>
+      <if test="id != null">
+        AND id = #{id}
+      </if>
+      <if test="title != null and title != ''">
+        AND title = #{title}
+      </if>
+      <if test="creator != null">
+        AND creator = #{creator}
+      </if>
+      <if test="parentId != null">
+        AND parent_id = #{parentId}
+      </if>
+      <if test="levelCode != null">
+        AND level_code = #{levelCode}
+      </if>
+      AND is_deleted = 0
+    </where>
+  </sql>
+
+  <select id="selectList" resultType="com.zlz.website.blog.common.dos.CategoryDO">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM category
+    <include refid="Where_Param" />
+  </select>
+
+  <select id="selectByParentId" resultType="com.zlz.website.blog.common.dos.CategoryDO">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM category
+    WHERE parent_id = #{parentId}
+    ORDER BY level_code DESC
+    LIMIT 1
+  </select>
+
+  <select id="selectFirstLevel" resultType="com.zlz.website.blog.common.dos.CategoryDO">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM category
+    WHERE `level` = 1
+    ORDER BY level_code DESC
+    LIMIT 1
+  </select>
 </mapper>

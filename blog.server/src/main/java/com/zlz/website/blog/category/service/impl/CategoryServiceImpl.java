@@ -1,7 +1,26 @@
 package com.zlz.website.blog.category.service.impl;
 
+import com.zlz.basic.constants.BasicConstants;
+import com.zlz.basic.response.ResultSet;
+import com.zlz.basic.response.TreeNode;
+import com.zlz.route.common.trace.TraceContext;
+import com.zlz.website.blog.category.mapper.CategoryMapper;
 import com.zlz.website.blog.category.service.CategoryService;
+import com.zlz.website.blog.common.dos.CategoryDO;
+import com.zlz.website.blog.common.param.CategoryParam;
+import com.zlz.website.blog.common.req.category.CategoryQueryReq;
+import com.zlz.website.blog.common.dtos.CategoryDTO;
+import com.zlz.website.blog.common.req.category.CategoryUpdateReq;
+import com.zlz.website.blog.common.transfer.CategoryTransfer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author zhulinzhong
@@ -9,4 +28,139 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CategoryServiceImpl implements CategoryService {
+
+    private static final Integer LEVEL_CODE_SIZE = 4;
+
+    private final CategoryMapper categoryMapper;
+
+    public CategoryServiceImpl(CategoryMapper categoryMapper) {
+        this.categoryMapper = categoryMapper;
+    }
+
+    @Override
+    public ResultSet<Long> updateCategory(CategoryUpdateReq req) {
+        CategoryDO categoryDO = CategoryTransfer.buildCategoryDO(req);
+
+        // 新增分类
+        if (categoryDO.getId() == null || BasicConstants.ZERO_LONG.equals(categoryDO.getId())) {
+            return createCategory(categoryDO);
+        }
+
+        return doUpdateCategory(categoryDO);
+    }
+
+    @Override
+    public ResultSet<List<CategoryDTO>> listCategory(CategoryQueryReq req) {
+
+        CategoryParam param = new CategoryParam();
+        param.setId(req.getId());
+        param.setTitle(req.getName());
+        param.setCreator(TraceContext.getUserId());
+        param.setLevelCode(req.getLevelCode());
+
+        List<CategoryDO> categories = categoryMapper.selectList(param);
+        if (CollectionUtils.isEmpty(categories)) {
+            return ResultSet.success();
+        }
+
+        List<CategoryDTO> categoryList = categories.stream().map(CategoryTransfer::trans2CategoryDTO).collect(Collectors.toList());
+        return ResultSet.success(categoryList);
+    }
+
+    @Override
+    public ResultSet<List<TreeNode<CategoryDTO>>> listCategoryTree(CategoryQueryReq req) {
+        CategoryParam param = new CategoryParam();
+        param.setTitle(req.getName());
+        param.setLevelCode(req.getLevelCode());
+        param.setCreator(TraceContext.getUserId());
+
+        List<CategoryDO> categories = categoryMapper.selectList(param);
+        if (categories.isEmpty()) {
+            return ResultSet.success();
+        }
+        Map<Long, List<CategoryDO>> groupByParentId = categories.stream().collect(Collectors.groupingBy(CategoryDO::getParentId));
+        List<CategoryDO> parentCategories = groupByParentId.get(BasicConstants.ZERO_LONG);
+        List<TreeNode<CategoryDTO>> data = parentCategories.stream().map(CategoryTransfer::trans2CategoryDTOTreeNode).collect(Collectors.toList());
+        buildChildTreeNode(data, groupByParentId);
+        return ResultSet.success(data);
+    }
+
+    private ResultSet<Long> doUpdateCategory(CategoryDO categoryDO) {
+        categoryMapper.updateByPrimaryKeySelective(categoryDO);
+        return ResultSet.success(categoryDO.getId());
+    }
+
+    private ResultSet<Long> createCategory(CategoryDO categoryDO) {
+        // 查询父级和同级最大的levelCode
+        CategoryDO parentCate = null;
+        if (categoryDO.getParentId() != null) {
+            parentCate = categoryMapper.selectByPrimaryKey(categoryDO.getParentId());
+        }
+        CategoryDO brotherCate = categoryMapper.selectByPrimaryKey(categoryDO.getParentId());
+
+        // 构建levelCode
+        buildLevelCode(categoryDO, parentCate, brotherCate);
+        categoryMapper.insert(categoryDO);
+        return ResultSet.success(categoryDO.getId());
+    }
+
+    private void buildLevelCode(CategoryDO category, CategoryDO parentCate, CategoryDO brotherCate) {
+        // 第一个一级分类
+        if (parentCate == null && brotherCate == null) {
+            category.setLevelCode(appendZero(1));
+            category.setLevel(1);
+            return;
+        }
+
+        // 一级分类
+        if (parentCate == null) {
+            category.setLevel(brotherCate.getLevel());
+            category.setLevelCode(appendZero(Integer.parseInt(brotherCate.getLevelCode())));
+            return;
+        }
+
+        // 父级的第一个子集
+        if (brotherCate == null) {
+            category.setLevelCode(parentCate.getLevelCode() + appendZero(1));
+            category.setLevel(parentCate.getLevel() + 1);
+            return;
+        }
+
+        // 存在兄弟节点的子集
+        String brotherLevelCode = brotherCate.getLevelCode();
+        String before = brotherLevelCode.substring(0, brotherLevelCode.length() - LEVEL_CODE_SIZE);
+        String after = brotherLevelCode.substring(brotherLevelCode.length() - LEVEL_CODE_SIZE);
+        category.setLevelCode(before + appendZero(Integer.parseInt(after) + 1));
+        category.setLevel(brotherCate.getLevel());
+    }
+
+    private String appendZero(Integer num) {
+        String sNum = String.valueOf(num);
+        if (sNum.length() >= LEVEL_CODE_SIZE) {
+            return sNum;
+        }
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < LEVEL_CODE_SIZE - sNum.length(); i++) {
+            str.append("0");
+        }
+        return str.append(sNum).toString();
+    }
+
+    private void buildChildTreeNode(List<TreeNode<CategoryDTO>> parent, Map<Long, List<CategoryDO>> groupByParentId) {
+        if (parent.isEmpty()) {
+            return;
+        }
+        for (TreeNode<CategoryDTO> treeNode : parent) {
+            List<CategoryDO> categories = groupByParentId.get(treeNode.getId());
+            if (CollectionUtils.isEmpty(categories)) {
+                return;
+            }
+            List<TreeNode<CategoryDTO>> children =
+                    categories.stream()
+                            .map(CategoryTransfer::trans2CategoryDTOTreeNode)
+                            .collect(Collectors.toList());
+            buildChildTreeNode(children, groupByParentId);
+            treeNode.setChildren(children);
+        }
+    }
 }

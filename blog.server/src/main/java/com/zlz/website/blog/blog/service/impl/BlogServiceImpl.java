@@ -11,7 +11,6 @@ import com.zlz.website.blog.blog.mapper.BlogMapper;
 import com.zlz.website.blog.blog.service.BlogService;
 import com.zlz.website.blog.common.dos.BlogContentDO;
 import com.zlz.website.blog.common.dos.BlogDO;
-import com.zlz.website.blog.common.dtos.BlogContentEditReq;
 import com.zlz.website.blog.common.enums.blog.EditorTypeEnum;
 import com.zlz.website.blog.common.exception.BlogBizException;
 import com.zlz.website.blog.common.exception.BlogExceptionEnum;

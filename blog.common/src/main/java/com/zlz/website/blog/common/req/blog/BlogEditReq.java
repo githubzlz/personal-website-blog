@@ -1,6 +1,5 @@
 package com.zlz.website.blog.common.req.blog;
 
-import com.zlz.website.blog.common.dtos.BlogContentEditReq;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
