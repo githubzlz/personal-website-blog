@@ -26,7 +26,7 @@
     from blog_content
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteById" parameterType="java.lang.Long">
+  <delete id="realDeleteById" parameterType="java.lang.Long">
     UPDATE blog_content
     SET is_deleted = 1,`state` = 1
     where id = #{id,jdbcType=BIGINT}

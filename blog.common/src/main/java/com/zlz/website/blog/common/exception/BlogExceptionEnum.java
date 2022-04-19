@@ -11,8 +11,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum BlogExceptionEnum {
 
-    MODIFY_BLOG_ERROR(1000001, "文章修改失败")
-
+    MODIFY_BLOG_ERROR(1000001, "文章修改失败"),
+    DELETE_BLOG_ERROR(1000002, "存在子分类，无法删除"),
     ;
 
     private Integer code;

@@ -20,7 +20,7 @@ public class CategoryDO implements Serializable {
     /**
      * 模块id
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**

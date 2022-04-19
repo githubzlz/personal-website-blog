@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zlz.basic.constants.BasicConstants;
 import com.zlz.basic.enums.DeletedStatusEnum;
 import com.zlz.basic.response.ResultSet;
-import com.zlz.route.common.trace.TraceContext;
+import com.zlz.basic.trace.TraceContext;
 import com.zlz.website.blog.blog.BlogBuilder;
 import com.zlz.website.blog.blog.mapper.BlogContentMapper;
 import com.zlz.website.blog.blog.mapper.BlogMapper;
@@ -70,7 +70,7 @@ public class BlogServiceImpl implements BlogService {
         if (req.getBlogContent().getUpdate()) {
             BlogContentDO blogContent = BlogBuilder.buildBlogContentDO(blogId, req.getBlogContent(), date);
             BlogContentDO oldBlogContent = blogContentMapper.selectLastVersionByBlogId(blogId);
-            blogContentMapper.deleteById(oldBlogContent.getId());
+            blogContentMapper.realDeleteById(oldBlogContent.getId());
 
             blogContent.setVersion(oldBlogContent.getVersion() + 1);
             blogContentMapper.insert(blogContent);

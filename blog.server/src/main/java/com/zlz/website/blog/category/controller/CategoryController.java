@@ -7,10 +7,7 @@ import com.zlz.website.blog.common.req.category.CategoryQueryReq;
 import com.zlz.website.blog.common.dtos.CategoryDTO;
 import com.zlz.website.blog.common.req.category.CategoryUpdateReq;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +35,10 @@ public class CategoryController {
     @PostMapping("/tree")
     public ResultSet<List<TreeNode<CategoryDTO>>> listCategoryTree(@RequestBody CategoryQueryReq req){
         return categoryService.listCategoryTree(req);
+    }
+
+    @GetMapping("/delete/{id}")
+    public ResultSet<Long> listCategoryTree(@PathVariable("id") Long id){
+        return categoryService.softDeleteCategory(id);
     }
 }

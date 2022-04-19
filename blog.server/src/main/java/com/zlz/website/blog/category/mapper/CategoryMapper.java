@@ -5,26 +5,27 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zlz.website.blog.common.dos.CategoryDO;
 import com.zlz.website.blog.common.param.CategoryParam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
-public interface CategoryMapper{
+public interface CategoryMapper extends BaseMapper<CategoryDO> {
     int deleteByPrimaryKey(Long id);
-
-    int insert(CategoryDO record);
 
     int insertSelective(CategoryDO record);
 
-    CategoryDO selectByPrimaryKey(Long id);
+    CategoryDO selectByPrimaryKey(@Param("id") Long id,
+                                  @Param("userId") Long userId);
 
     int updateByPrimaryKeySelective(CategoryDO record);
 
     int updateByPrimaryKey(CategoryDO record);
 
-    List<CategoryDO> selectList(CategoryParam param);
+    List<CategoryDO> selectListByParams(CategoryParam param);
 
-    CategoryDO selectByParentId(Long parentId);
+    CategoryDO selectByParentId(@Param("parentId") Long parentId,
+                                @Param("userId") Long userId);
 
     CategoryDO selectFirstLevel();
 }

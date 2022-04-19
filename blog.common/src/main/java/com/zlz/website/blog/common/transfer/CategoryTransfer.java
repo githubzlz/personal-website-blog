@@ -3,7 +3,7 @@ package com.zlz.website.blog.common.transfer;
 import com.zlz.basic.constants.BasicConstants;
 import com.zlz.basic.enums.DeletedStatusEnum;
 import com.zlz.basic.response.TreeNode;
-import com.zlz.route.common.trace.TraceContext;
+import com.zlz.basic.trace.TraceContext;
 import com.zlz.website.blog.common.dos.CategoryDO;
 import com.zlz.website.blog.common.dtos.CategoryDTO;
 import com.zlz.website.blog.common.enums.category.IsPublishEnum;
@@ -22,6 +22,8 @@ public class CategoryTransfer {
         CategoryDTO dto = new CategoryDTO();
         dto.setId(category.getId());
         dto.setName(category.getTitle());
+        dto.setLevel(category.getLevel());
+        dto.setLevelCode(category.getLevelCode());
         dto.setCreatedTime(category.getCreatedTime());
         dto.setLastModifiedTime(category.getLastModifiedTime());
         return dto;

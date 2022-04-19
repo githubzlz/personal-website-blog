@@ -1,25 +1,26 @@
 package com.zlz.website.blog.category.service.impl;
 
 import com.zlz.basic.constants.BasicConstants;
+import com.zlz.basic.enums.DeletedStatusEnum;
 import com.zlz.basic.response.ResultSet;
 import com.zlz.basic.response.TreeNode;
-import com.zlz.route.common.trace.TraceContext;
+import com.zlz.basic.trace.TraceContext;
 import com.zlz.website.blog.category.mapper.CategoryMapper;
 import com.zlz.website.blog.category.service.CategoryService;
 import com.zlz.website.blog.common.dos.CategoryDO;
+import com.zlz.website.blog.common.dtos.CategoryDTO;
+import com.zlz.website.blog.common.exception.BlogBizException;
+import com.zlz.website.blog.common.exception.BlogExceptionEnum;
 import com.zlz.website.blog.common.param.CategoryParam;
 import com.zlz.website.blog.common.req.category.CategoryQueryReq;
-import com.zlz.website.blog.common.dtos.CategoryDTO;
 import com.zlz.website.blog.common.req.category.CategoryUpdateReq;
 import com.zlz.website.blog.common.transfer.CategoryTransfer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
         param.setCreator(TraceContext.getUserId());
         param.setLevelCode(req.getLevelCode());
 
-        List<CategoryDO> categories = categoryMapper.selectList(param);
+        List<CategoryDO> categories = categoryMapper.selectListByParams(param);
         if (CollectionUtils.isEmpty(categories)) {
             return ResultSet.success();
         }
@@ -74,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
         param.setLevelCode(req.getLevelCode());
         param.setCreator(TraceContext.getUserId());
 
-        List<CategoryDO> categories = categoryMapper.selectList(param);
+        List<CategoryDO> categories = categoryMapper.selectListByParams(param);
         if (categories.isEmpty()) {
             return ResultSet.success();
         }
@@ -85,7 +86,27 @@ public class CategoryServiceImpl implements CategoryService {
         return ResultSet.success(data);
     }
 
+    @Override
+    public ResultSet<Long> softDeleteCategory(Long id) {
+
+        // 存在子级不允许删除
+        CategoryDO childCate = categoryMapper.selectByParentId(id, TraceContext.getUserId());
+        if (childCate != null) {
+            throw new BlogBizException(BlogExceptionEnum.DELETE_BLOG_ERROR);
+        }
+
+        // 逻辑删除
+        CategoryDO categoryDO = new CategoryDO();
+        categoryDO.setId(id);
+        categoryDO.setIsDeleted(DeletedStatusEnum.DELETED.getCode());
+        categoryDO.setLastModifier(TraceContext.getUserId());
+        categoryDO.setLastModifiedTime(new Date());
+        categoryMapper.updateById(categoryDO);
+        return ResultSet.success(id);
+    }
+
     private ResultSet<Long> doUpdateCategory(CategoryDO categoryDO) {
+        CategoryDO update = new CategoryDO();
         categoryMapper.updateByPrimaryKeySelective(categoryDO);
         return ResultSet.success(categoryDO.getId());
     }
@@ -93,10 +114,10 @@ public class CategoryServiceImpl implements CategoryService {
     private ResultSet<Long> createCategory(CategoryDO categoryDO) {
         // 查询父级和同级最大的levelCode
         CategoryDO parentCate = null;
-        if (categoryDO.getParentId() != null) {
-            parentCate = categoryMapper.selectByPrimaryKey(categoryDO.getParentId());
+        if (categoryDO.getParentId() != null && !BasicConstants.ZERO_LONG.equals(categoryDO.getParentId())) {
+            parentCate = categoryMapper.selectByPrimaryKey(categoryDO.getParentId(), TraceContext.getUserId());
         }
-        CategoryDO brotherCate = categoryMapper.selectByPrimaryKey(categoryDO.getParentId());
+        CategoryDO brotherCate = categoryMapper.selectByParentId(categoryDO.getParentId(), TraceContext.getUserId());
 
         // 构建levelCode
         buildLevelCode(categoryDO, parentCate, brotherCate);
@@ -115,7 +136,7 @@ public class CategoryServiceImpl implements CategoryService {
         // 一级分类
         if (parentCate == null) {
             category.setLevel(brotherCate.getLevel());
-            category.setLevelCode(appendZero(Integer.parseInt(brotherCate.getLevelCode())));
+            category.setLevelCode(appendZero(Integer.parseInt(brotherCate.getLevelCode()) + 1));
             return;
         }
 
@@ -153,7 +174,7 @@ public class CategoryServiceImpl implements CategoryService {
         for (TreeNode<CategoryDTO> treeNode : parent) {
             List<CategoryDO> categories = groupByParentId.get(treeNode.getId());
             if (CollectionUtils.isEmpty(categories)) {
-                return;
+                continue;
             }
             List<TreeNode<CategoryDTO>> children =
                     categories.stream()

@@ -15,6 +15,10 @@ public class CategoryDTO {
 
     private String name;
 
+    private Integer level;
+
+    private String levelCode;
+
     private Date createdTime;
 
     private Date lastModifiedTime;

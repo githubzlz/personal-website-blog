@@ -1,11 +1,18 @@
 package com.zlz.website.blog.config;
 
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * mybatis-plus配置类
@@ -23,8 +30,8 @@ public class BeanRegister {
      * 分页插件
      */
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+    public MybatisPlusInterceptor paginationInterceptor() {
+        MybatisPlusInterceptor paginationInterceptor = new MybatisPlusInterceptor();
         // paginationInterceptor.setLimit(你的最大单页限制数量，默认 500 条，小于 0 如 -1 不受限制);
         return paginationInterceptor;
     }
@@ -38,11 +45,11 @@ public class BeanRegister {
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         return jacksonObjectMapperBuilder -> jacksonObjectMapperBuilder
                 .serializerByType(Long.class, ToStringSerializer.instance)
-                .serializerByType(Long.TYPE, ToStringSerializer.instance);
-//                .serializerByType(LocalDateTime.class, new LocalDateTimeSerializer(
-//                        DateTimeFormatter.ofPattern(DATE_TIME_FORMATTER)))
-//                .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(
-//                        DateTimeFormatter.ofPattern(DATE_TIME_FORMATTER)));
+                .serializerByType(Long.TYPE, ToStringSerializer.instance)
+                .serializerByType(Date.class, new DateSerializer(
+                        false, new SimpleDateFormat(DATE_TIME_FORMATTER)))
+                .deserializerByType(LocalDateTime.class, new LocalDateTimeDeserializer(
+                        DateTimeFormatter.ofPattern(DATE_TIME_FORMATTER)));
     }
 
     /**

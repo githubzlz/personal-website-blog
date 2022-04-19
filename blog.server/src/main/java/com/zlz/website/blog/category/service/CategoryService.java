@@ -35,4 +35,11 @@ public interface CategoryService {
      * @return
      */
     ResultSet<List<TreeNode<CategoryDTO>>> listCategoryTree(CategoryQueryReq req);
+
+    /**
+     * 逻辑删除分类
+     * @param id
+     * @return
+     */
+    ResultSet<Long> softDeleteCategory(Long id);
 }

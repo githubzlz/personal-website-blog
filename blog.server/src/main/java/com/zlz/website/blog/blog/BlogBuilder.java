@@ -1,6 +1,6 @@
 package com.zlz.website.blog.blog;
 
-import com.zlz.route.common.trace.TraceContext;
+import com.zlz.basic.trace.TraceContext;
 import com.zlz.website.blog.common.dos.BlogContentDO;
 import com.zlz.website.blog.common.dos.BlogDO;
 import com.zlz.website.blog.common.req.blog.BlogContentEditReq;

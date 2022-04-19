@@ -22,30 +22,21 @@
     creator, created_time, last_modifier, last_modified_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
+    SELECT
     <include refid="Base_Column_List"/>
-    from category
-    where id = #{id,jdbcType=BIGINT}
+    FROM category
+    WHERE id = #{id,jdbcType=BIGINT}
+    AND is_deleted = 0
+    AND creator = #{userId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete
-    from category
-    where id = #{id,jdbcType=BIGINT}
+    DELETE
+    FROM category
+    WHERE id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.CategoryDO"
-          useGeneratedKeys="true">
-    insert into category (`level`, level_code, parent_id,
-                          title, introduction, image_url,
-                          is_publish, is_deleted, creator,
-                          created_time, last_modifier, last_modified_time)
-    values (#{level,jdbcType=TINYINT}, #{levelCode,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT},
-            #{title,jdbcType=VARCHAR}, #{introduction,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR},
-            #{isPublish,jdbcType=BOOLEAN}, #{isDeleted,jdbcType=BOOLEAN}, #{creator,jdbcType=BIGINT},
-            #{createdTime,jdbcType=TIMESTAMP}, #{lastModifier,jdbcType=BIGINT}, #{lastModifiedTime,jdbcType=TIMESTAMP})
-  </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id"
           parameterType="com.zlz.website.blog.common.dos.CategoryDO" useGeneratedKeys="true">
-    insert into category
+    INSERT INTO category
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="level != null">
         `level`,
@@ -124,7 +115,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.zlz.website.blog.common.dos.CategoryDO">
-    update category
+    UPDATE category
     <set>
       <if test="level != null">
         `level` = #{level,jdbcType=TINYINT},
@@ -163,11 +154,11 @@
         last_modified_time = #{lastModifiedTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    WHERE id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zlz.website.blog.common.dos.CategoryDO">
-    update category
-    set `level`            = #{level,jdbcType=TINYINT},
+    UPDATE category
+    SET `level`            = #{level,jdbcType=TINYINT},
         level_code         = #{levelCode,jdbcType=VARCHAR},
         parent_id          = #{parentId,jdbcType=BIGINT},
         title              = #{title,jdbcType=VARCHAR},
@@ -179,7 +170,7 @@
         created_time       = #{createdTime,jdbcType=TIMESTAMP},
         last_modifier      = #{lastModifier,jdbcType=BIGINT},
         last_modified_time = #{lastModifiedTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    WHERE id = #{id,jdbcType=BIGINT}
   </update>
 
   <sql id="Where_Param">
@@ -188,7 +179,7 @@
         AND id = #{id}
       </if>
       <if test="title != null and title != ''">
-        AND title = #{title}
+        AND title LIKE CONCAT('%',#{title},'%')
       </if>
       <if test="creator != null">
         AND creator = #{creator}
@@ -203,18 +194,20 @@
     </where>
   </sql>
 
-  <select id="selectList" resultType="com.zlz.website.blog.common.dos.CategoryDO">
+  <select id="selectListByParams" resultType="com.zlz.website.blog.common.dos.CategoryDO">
     SELECT
     <include refid="Base_Column_List"/>
     FROM category
-    <include refid="Where_Param" />
+    <include refid="Where_Param"/>
   </select>
 
   <select id="selectByParentId" resultType="com.zlz.website.blog.common.dos.CategoryDO">
     SELECT
     <include refid="Base_Column_List"/>
     FROM category
-    WHERE parent_id = #{parentId}
+    WHERE parent_id = #{parentId,jdbcType=BIGINT}
+    AND is_deleted = 0
+    AND creator = #{userId,jdbcType=BIGINT}
     ORDER BY level_code DESC
     LIMIT 1
   </select>

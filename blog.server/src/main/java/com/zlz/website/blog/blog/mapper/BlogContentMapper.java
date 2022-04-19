@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface BlogContentMapper extends BaseMapper<BlogContentDO> {
-    int deleteById(Long id);
+    int realDeleteById(Long id);
 
     int insertSelective(BlogContentDO record);
 
