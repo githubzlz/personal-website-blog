@@ -6,7 +6,7 @@ spring:
   application:
     name: settings
   datasource:
-    url: jdbc:mysql://49.235.229.8:3306/blog?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://49.235.229.8:3306/blog?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: zhulinzhong
     password: zhulinzhong

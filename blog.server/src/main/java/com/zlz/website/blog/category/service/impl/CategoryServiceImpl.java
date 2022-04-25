@@ -1,5 +1,6 @@
 package com.zlz.website.blog.category.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zlz.basic.constants.BasicConstants;
 import com.zlz.basic.enums.DeletedStatusEnum;
 import com.zlz.basic.response.ResultSet;
@@ -41,6 +42,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResultSet<Long> updateCategory(CategoryUpdateReq req) {
         CategoryDO categoryDO = CategoryTransfer.buildCategoryDO(req);
+
+        // 重名校验
+        QueryWrapper<CategoryDO> wrapper = new QueryWrapper<>();
+        wrapper.eq("title", req.getName());
+        wrapper.eq("is_deleted", DeletedStatusEnum.NOT_DELETED.getCode());
+        wrapper.last("limit 1");
+        CategoryDO sameName = categoryMapper.selectOne(wrapper);
+        if (sameName != null && !sameName.getId().equals(req.getId())) {
+            throw new BlogBizException(BlogExceptionEnum.MODIFY_BLOG_ERROR_SAME_TITLE);
+        }
 
         // 新增分类
         if (categoryDO.getId() == null || BasicConstants.ZERO_LONG.equals(categoryDO.getId())) {
@@ -107,7 +118,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     private ResultSet<Long> doUpdateCategory(CategoryDO categoryDO) {
         CategoryDO update = new CategoryDO();
-        categoryMapper.updateByPrimaryKeySelective(categoryDO);
+        update.setId(categoryDO.getId());
+        update.setTitle(categoryDO.getTitle());
+        categoryMapper.updateById(update);
         return ResultSet.success(categoryDO.getId());
     }
 
