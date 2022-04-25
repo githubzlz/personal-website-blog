@@ -12,7 +12,7 @@ import lombok.Getter;
 public enum IsPublishEnum {
 
     PUBLISHED(0, "发布"),
-    DISPUBLISH(1, "不发布"),
+    DIS_PUBLISH(1, "不发布"),
     ;
 
 

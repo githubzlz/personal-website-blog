@@ -1,12 +1,15 @@
 package com.zlz.website.blog.tag.controller;
 
+import com.zlz.basic.response.ResultSet;
 import com.zlz.website.blog.common.dos.TagDO;
+import com.zlz.website.blog.common.req.tag.TagEditReq;
+import com.zlz.website.blog.common.resp.tag.TagTreeResp;
 import com.zlz.website.blog.tag.mapper.TagMapper;
+import com.zlz.website.blog.tag.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author zhulinzhong
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TagController {
 
     @Autowired
-    private TagMapper tagMapper;
+    private TagService tagService;
 
     @GetMapping("/query-by-id")
     public TagDO getById(@RequestParam("id") Long id) {
@@ -28,4 +31,25 @@ public class TagController {
     public TagDO getById(@RequestParam("id") Long id, @RequestParam("code") String code) {
         return null;
     }
+
+    @PostMapping("/create/cate")
+    public ResultSet<Long> createTagCate(@RequestBody TagEditReq req) {
+        return tagService.createTagCate(req);
+    }
+
+    @PostMapping("/create")
+    public ResultSet<Long> createTag(@RequestBody TagEditReq req) {
+        return tagService.createTag(req);
+    }
+
+    @GetMapping("/tree")
+    public ResultSet<List<TagTreeResp>> queryTagTree() {
+        return tagService.queryTagTree();
+    }
+
+    @PostMapping("/delete")
+    public ResultSet<Long> deleteTag(@RequestBody TagEditReq req) {
+        return tagService.softDeleteTag(req);
+    }
+
 }

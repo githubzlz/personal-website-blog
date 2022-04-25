@@ -9,12 +9,12 @@ public enum BlogShowEnum {
     /**
      * 不展示
      */
-    SHOW(0, "不展示"),
+    SHOW(0, "展示"),
 
     /**
      * 展示
      */
-    HIDDEN(1, "展示"),
+    HIDDEN(1, "不展示"),
 
     /**
      * 自己可见
