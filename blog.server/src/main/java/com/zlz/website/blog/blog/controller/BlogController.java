@@ -3,10 +3,13 @@ package com.zlz.website.blog.blog.controller;
 import com.zlz.basic.constants.BasicConstants;
 import com.zlz.basic.response.ResultSet;
 import com.zlz.website.blog.blog.service.BlogService;
+import com.zlz.website.blog.common.dtos.BlogDTO;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
+import com.zlz.website.blog.common.req.blog.BlogListQueryReq;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -33,6 +36,11 @@ public class BlogController {
 
         // 编辑
         return blogService.modifyBlog(req);
+    }
+
+    @PostMapping("/query/list")
+    public ResultSet<List<BlogDTO>> queryList(@RequestBody BlogListQueryReq req) {
+        return blogService.queryList(req);
     }
 
     @PostMapping("/delete/soft")

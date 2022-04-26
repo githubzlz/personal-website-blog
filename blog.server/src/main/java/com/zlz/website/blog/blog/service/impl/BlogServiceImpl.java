@@ -1,6 +1,8 @@
 package com.zlz.website.blog.blog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.zlz.basic.constants.BasicConstants;
 import com.zlz.basic.enums.DeletedStatusEnum;
 import com.zlz.basic.response.ResultSet;
@@ -11,14 +13,14 @@ import com.zlz.website.blog.blog.mapper.BlogMapper;
 import com.zlz.website.blog.blog.service.BlogService;
 import com.zlz.website.blog.common.dos.BlogContentDO;
 import com.zlz.website.blog.common.dos.BlogDO;
+import com.zlz.website.blog.common.dtos.BlogDTO;
 import com.zlz.website.blog.common.enums.blog.EditorTypeEnum;
-import com.zlz.website.blog.common.exception.BlogBizException;
-import com.zlz.website.blog.common.exception.BlogExceptionEnum;
-import com.zlz.website.blog.common.param.BlogParam;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
-import com.zlz.website.blog.common.resp.blog.BlogSimpleResp;
+import com.zlz.website.blog.common.req.blog.BlogListQueryParam;
+import com.zlz.website.blog.common.req.blog.BlogListQueryReq;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -36,6 +38,12 @@ public class BlogServiceImpl implements BlogService {
     public BlogServiceImpl(BlogMapper blogMapper, BlogContentMapper blogContentMapper) {
         this.blogMapper = blogMapper;
         this.blogContentMapper = blogContentMapper;
+    }
+
+    @Override
+    public ResultSet<List<BlogDTO>> queryList(BlogListQueryReq req) {
+        blogMapper.selectList(req.getParams(), req.getPageInfo());
+        return null;
     }
 
     @Override
@@ -58,16 +66,16 @@ public class BlogServiceImpl implements BlogService {
     public ResultSet<Long> modifyBlog(BlogEditReq req) {
         Long blogId = req.getId();
         Date date = new Date();
-        if (req.getUpdate()) {
+        if (req.getId() != null) {
             BlogDO blog = BlogBuilder.buildBlogDO(req, date);
-            blogMapper.updateByPrimaryKey(blog);
+            blogMapper.updateById(blog);
         }
 
         // 存在更新
         // 1.获取最后版本
         // 2.将最后版本置为无效
         // 3.插入新版本
-        if (req.getBlogContent().getUpdate()) {
+        if (req.getId() != null) {
             BlogContentDO blogContent = BlogBuilder.buildBlogContentDO(blogId, req.getBlogContent(), date);
             BlogContentDO oldBlogContent = blogContentMapper.selectLastVersionByBlogId(blogId);
             blogContentMapper.realDeleteById(oldBlogContent.getId());
@@ -76,26 +84,7 @@ public class BlogServiceImpl implements BlogService {
             blogContentMapper.insert(blogContent);
 
         }
-
-        if (!req.getUpdate() && !req.getBlogContent().getUpdate()) {
-            throw new BlogBizException(BlogExceptionEnum.MODIFY_BLOG_ERROR);
-        }
         return ResultSet.success(blogId);
-    }
-
-    @Override
-    public ResultSet<BlogSimpleResp> queryBlogSimpleInfo(Long blogId) {
-        return null;
-    }
-
-    @Override
-    public ResultSet<BlogSimpleResp> queryBlogContent(Long blogId) {
-        return null;
-    }
-
-    @Override
-    public ResultSet<List<BlogSimpleResp>> batchQueryBlog(BlogParam params) {
-        return null;
     }
 
     @Override
@@ -126,21 +115,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public ResultSet<Boolean> batchSoftDeleteBlog(List<Long> blogIds) {
-        return null;
-    }
-
-    @Override
     public ResultSet<Boolean> deleteBlog(Long blogId) {
         int i = blogMapper.deleteById(blogId);
         if (BasicConstants.ZERO_INTEGER.equals(i)) {
             return ResultSet.error();
         }
         return ResultSet.success();
-    }
-
-    @Override
-    public ResultSet<Boolean> batchDeleteBlog(List<Long> blogIds) {
-        return null;
     }
 }

@@ -2,9 +2,10 @@ package com.zlz.website.blog.tag.controller;
 
 import com.zlz.basic.response.ResultSet;
 import com.zlz.website.blog.common.dos.TagDO;
+import com.zlz.website.blog.common.dtos.TagDTO;
 import com.zlz.website.blog.common.req.tag.TagEditReq;
+import com.zlz.website.blog.common.req.tag.TagQueryReq;
 import com.zlz.website.blog.common.resp.tag.TagTreeResp;
-import com.zlz.website.blog.tag.mapper.TagMapper;
 import com.zlz.website.blog.tag.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +23,19 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
-    @GetMapping("/query-by-id")
-    public TagDO getById(@RequestParam("id") Long id) {
-        return null;
+    @PostMapping("/query-by-name")
+    public ResultSet<List<TagDTO>> queryListByName(@RequestBody TagQueryReq req) {
+        return tagService.queryListByName(req);
     }
 
     @GetMapping("/query-by-id-code")
     public TagDO getById(@RequestParam("id") Long id, @RequestParam("code") String code) {
         return null;
+    }
+
+    @GetMapping("/tree")
+    public ResultSet<List<TagTreeResp>> queryTagTree() {
+        return tagService.queryTagTree();
     }
 
     @PostMapping("/create/cate")
@@ -40,11 +46,6 @@ public class TagController {
     @PostMapping("/create")
     public ResultSet<Long> createTag(@RequestBody TagEditReq req) {
         return tagService.createTag(req);
-    }
-
-    @GetMapping("/tree")
-    public ResultSet<List<TagTreeResp>> queryTagTree() {
-        return tagService.queryTagTree();
     }
 
     @PostMapping("/delete")

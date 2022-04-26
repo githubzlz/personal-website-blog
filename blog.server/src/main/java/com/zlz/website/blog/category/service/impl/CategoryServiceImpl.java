@@ -18,10 +18,9 @@ import com.zlz.website.blog.common.req.category.CategoryUpdateReq;
 import com.zlz.website.blog.common.transfer.CategoryTransfer;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -75,7 +74,15 @@ public class CategoryServiceImpl implements CategoryService {
             return ResultSet.success();
         }
 
-        List<CategoryDTO> categoryList = categories.stream().map(CategoryTransfer::trans2CategoryDTO).collect(Collectors.toList());
+        List<CategoryDTO> categoryList = categories.stream()
+                .map(CategoryTransfer::trans2CategoryDTO)
+                .sorted((o1, o2) -> {
+                    if (o1.getLevel().equals(o2.getLevel())) {
+                        return Integer.parseInt(o1.getLevelCode()) - Integer.parseInt(o2.getLevelCode());
+                    }
+                    int min = Math.min(o1.getLevelCode().length(), o2.getLevelCode().length());
+                    return Integer.parseInt(o1.getLevelCode().substring(0, min)) - Integer.parseInt(o2.getLevelCode().substring(0, min));
+                }).collect(Collectors.toList());
         return ResultSet.success(categoryList);
     }
 
@@ -197,4 +204,23 @@ public class CategoryServiceImpl implements CategoryService {
             treeNode.setChildren(children);
         }
     }
+
+    /**
+     * LevelCode转化LevelCode数组
+     *
+     * @param levelCode
+     * @return
+     */
+    private static List<Integer> parseLevelCode(String levelCode) {
+        if (StringUtils.isEmpty(levelCode)) {
+            return new ArrayList<>();
+        }
+        List<Integer> codes = new ArrayList<>();
+        for (int i = 0; i < levelCode.length(); i += 4) {
+            String code = levelCode.substring(i, i + 4);
+            codes.add(Integer.parseInt(code));
+        }
+        return codes;
+    }
+
 }

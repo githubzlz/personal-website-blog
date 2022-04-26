@@ -44,12 +44,6 @@ public class BlogEditReq {
     @NotNull(message = "文章内容不允许为空", groups = Create.class)
     private BlogContentEditReq blogContent;
 
-    /**
-     * 是否存在修改
-     */
-    @NotNull(message = "是否更新文章字段不允许为空", groups = Update.class)
-    private Boolean update;
-
     public interface Create{}
 
     public interface Update{}

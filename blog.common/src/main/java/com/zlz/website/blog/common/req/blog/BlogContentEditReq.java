@@ -12,12 +12,6 @@ import javax.validation.constraints.NotNull;
 public class BlogContentEditReq {
 
     /**
-     * 是否存在文章内容修改
-     */
-    @NotNull(message = "是否更新文章内容字段不允许为空", groups = BlogEditReq.Update.class)
-    private Boolean update;
-
-    /**
      * 文章id
      */
     private Long blogId;
