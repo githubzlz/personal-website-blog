@@ -1,8 +1,7 @@
 package com.zlz.website.blog.blog.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.zlz.basic.constants.BasicConstants;
 import com.zlz.basic.enums.DeletedStatusEnum;
 import com.zlz.basic.response.ResultSet;
@@ -16,14 +15,14 @@ import com.zlz.website.blog.common.dos.BlogDO;
 import com.zlz.website.blog.common.dtos.BlogDTO;
 import com.zlz.website.blog.common.enums.blog.EditorTypeEnum;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
-import com.zlz.website.blog.common.req.blog.BlogListQueryParam;
 import com.zlz.website.blog.common.req.blog.BlogListQueryReq;
+import com.zlz.website.blog.common.transfer.BlogTransfer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zhulinzhong
@@ -42,8 +41,14 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public ResultSet<List<BlogDTO>> queryList(BlogListQueryReq req) {
-        blogMapper.selectList(req.getParams(), req.getPageInfo());
-        return null;
+        List<BlogDO> blogDOS;
+        if (StringUtils.isNotEmpty(req.getParams().getAll())) {
+            blogDOS = blogMapper.selectListByParamAll(req.getParams(), req.getPageInfo());
+        } else {
+            blogDOS = blogMapper.selectListByParams(req.getParams(), req.getPageInfo());
+        }
+        List<BlogDTO> result = blogDOS.stream().map(BlogTransfer::trans2BlogDTO).collect(Collectors.toList());
+        return ResultSet.success(result);
     }
 
     @Override

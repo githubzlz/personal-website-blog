@@ -7,6 +7,7 @@ import com.zlz.website.blog.common.dos.BlogDO;
 import com.zlz.website.blog.common.dtos.BlogDTO;
 import com.zlz.website.blog.common.req.blog.BlogListQueryParam;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,15 +17,8 @@ import java.util.List;
  */
 @Mapper
 public interface BlogMapper extends BaseMapper<BlogDO> {
-    int deleteByPrimaryKey(Long id);
 
-    int insertSelective(BlogDO record);
+    List<BlogDO> selectListByParams(@Param("params") BlogListQueryParam params, @Param("pageInfo") PageInfo<BlogDTO> pageInfo);
 
-    BlogDO selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(BlogDO record);
-
-    int updateByPrimaryKey(BlogDO record);
-
-    List<BlogDO> selectList(BlogListQueryParam params, PageInfo<BlogDTO> pageInfo);
+    List<BlogDO> selectListByParamAll(@Param("params") BlogListQueryParam params, @Param("pageInfo") PageInfo<BlogDTO> pageInfo);
 }

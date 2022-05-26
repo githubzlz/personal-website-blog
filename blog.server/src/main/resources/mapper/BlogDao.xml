@@ -1,192 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zlz.website.blog.blog.mapper.BlogMapper">
-  <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.dos.BlogDO">
-    <id column="id" jdbcType="BIGINT" property="id"/>
-    <result column="user_id" jdbcType="BIGINT" property="userId"/>
-    <result column="title" jdbcType="VARCHAR" property="title"/>
-    <result column="provenance" jdbcType="TINYINT" property="provenance"/>
-    <result column="visible_strategy" jdbcType="TINYINT" property="visibleStrategy"/>
-    <result column="img_src" jdbcType="VARCHAR" property="imgSrc"/>
-    <result column="is_show" jdbcType="TINYINT" property="isShow"/>
-    <result column="stars" jdbcType="INTEGER" property="stars"/>
-    <result column="readings" jdbcType="INTEGER" property="readings"/>
-    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
-    <result column="creator" jdbcType="BIGINT" property="creator"/>
-    <result column="operator" jdbcType="BIGINT" property="operator"/>
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
-    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
-  </resultMap>
-  <sql id="Base_Column_List">
-    id
-    , user_id, title, provenance, visible_strategy, img_src, is_show, stars, readings,
+    <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.dos.BlogDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="provenance" jdbcType="TINYINT" property="provenance"/>
+        <result column="visible_strategy" jdbcType="TINYINT" property="visibleStrategy"/>
+        <result column="img_src" jdbcType="VARCHAR" property="imgSrc"/>
+        <result column="is_show" jdbcType="TINYINT" property="isShow"/>
+        <result column="stars" jdbcType="INTEGER" property="stars"/>
+        <result column="readings" jdbcType="INTEGER" property="readings"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="creator" jdbcType="BIGINT" property="creator"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , user_id, title, provenance, img_src, is_publish, stars, readings,
     is_deleted, creator, `operator`, created_time, modified_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from blog
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete
-    from blog
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+    </sql>
 
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zlz.website.blog.common.dos.BlogDO"
-          useGeneratedKeys="true">
-    insert into blog
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        user_id,
-      </if>
-      <if test="title != null">
-        title,
-      </if>
-      <if test="provenance != null">
-        provenance,
-      </if>
-      <if test="visibleStrategy != null">
-        visible_strategy,
-      </if>
-      <if test="imgSrc != null">
-        img_src,
-      </if>
-      <if test="isShow != null">
-        is_show,
-      </if>
-      <if test="stars != null">
-        stars,
-      </if>
-      <if test="readings != null">
-        readings,
-      </if>
-      <if test="isDeleted != null">
-        is_deleted,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="operator != null">
-        `operator`,
-      </if>
-      <if test="createdTime != null">
-        created_time,
-      </if>
-      <if test="modifiedTime != null">
-        modified_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userId != null">
-        #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="title != null">
-        #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="provenance != null">
-        #{provenance,jdbcType=TINYINT},
-      </if>
-      <if test="visibleStrategy != null">
-        #{visibleStrategy,jdbcType=TINYINT},
-      </if>
-      <if test="imgSrc != null">
-        #{imgSrc,jdbcType=VARCHAR},
-      </if>
-      <if test="isShow != null">
-        #{isShow,jdbcType=TINYINT},
-      </if>
-      <if test="stars != null">
-        #{stars,jdbcType=INTEGER},
-      </if>
-      <if test="readings != null">
-        #{readings,jdbcType=INTEGER},
-      </if>
-      <if test="isDeleted != null">
-        #{isDeleted,jdbcType=TINYINT},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=BIGINT},
-      </if>
-      <if test="operator != null">
-        #{operator,jdbcType=BIGINT},
-      </if>
-      <if test="createdTime != null">
-        #{createdTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifiedTime != null">
-        #{modifiedTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zlz.website.blog.common.dos.BlogDO">
-    update blog
-    <set>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=BIGINT},
-      </if>
-      <if test="title != null">
-        title = #{title,jdbcType=VARCHAR},
-      </if>
-      <if test="provenance != null">
-        provenance = #{provenance,jdbcType=TINYINT},
-      </if>
-      <if test="visibleStrategy != null">
-        visible_strategy = #{visibleStrategy,jdbcType=TINYINT},
-      </if>
-      <if test="imgSrc != null">
-        img_src = #{imgSrc,jdbcType=VARCHAR},
-      </if>
-      <if test="isShow != null">
-        is_show = #{isShow,jdbcType=TINYINT},
-      </if>
-      <if test="stars != null">
-        stars = #{stars,jdbcType=INTEGER},
-      </if>
-      <if test="readings != null">
-        readings = #{readings,jdbcType=INTEGER},
-      </if>
-      <if test="isDeleted != null">
-        is_deleted = #{isDeleted,jdbcType=TINYINT},
-      </if>
-      <if test="creator != null">
-        creator = #{creator,jdbcType=BIGINT},
-      </if>
-      <if test="operator != null">
-        `operator` = #{operator,jdbcType=BIGINT},
-      </if>
-      <if test="createdTime != null">
-        created_time = #{createdTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="modifiedTime != null">
-        modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.zlz.website.blog.common.dos.BlogDO">
-    update blog
-    set user_id          = #{userId,jdbcType=BIGINT},
-        title            = #{title,jdbcType=VARCHAR},
-        provenance       = #{provenance,jdbcType=TINYINT},
-        visible_strategy = #{visibleStrategy,jdbcType=TINYINT},
-        img_src          = #{imgSrc,jdbcType=VARCHAR},
-        is_show          = #{isShow,jdbcType=TINYINT},
-        stars            = #{stars,jdbcType=INTEGER},
-        readings         = #{readings,jdbcType=INTEGER},
-        is_deleted       = #{isDeleted,jdbcType=TINYINT},
-        creator          = #{creator,jdbcType=BIGINT},
-        `operator`       = #{operator,jdbcType=BIGINT},
-        created_time     = #{createdTime,jdbcType=TIMESTAMP},
-        modified_time    = #{modifiedTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+    <select id="selectListByParams" resultType="com.zlz.website.blog.common.dos.BlogDO">
+        SELECT
+        b.id, b.user_id, b.title, b.provenance, b.img_src, b.is_publish, b.stars, b.readings,
+        b.is_deleted, b.creator, b.operator, b.created_time, b.modified_time
+        FROM blog b
+        <where>
+            <if test="params.title != null and params.title != '' ">
+                b.title LIKE #{params.title}
+            </if>
+            <if test="params.date != null">
+                AND b.modified_time BETWEEN #{params.date.startDate} AND #{params.date.endDate}
+            </if>
+            <if test="params.provenance != null">
+                AND b.provenance = #{params.provenance}
+            </if>
+            <if test="params.categories != null and params.categories.size() != 0">
+                EXISTS(
+                SELECT
+                1
+                FROM
+                blog_category_relation bcr
+                WHERE bcr.blog_id = b.id AND bcr.cate_id IN
+                <foreach collection="params.categories" item="cateId" separator="," open="(" close=")">
+                    #{cateId}
+                </foreach>
+                )
+            </if>
+            <if test="params.tags != null and params.tags.size() != 0">
+                EXISTS(
+                SELECT
+                1
+                FROM
+                blog_tag_relation btr
+                WHERE btr.blog_id = b.id AND btr.tag_id IN
+                <foreach collection="params.tags" item="tagId" separator="," open="(" close=")">
+                    #{tagId}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
 
-  <select id="selectList">
-    SELECT
-        <include refid="Base_Column_List" />
-    FROM
+    <select id="selectListByParamAll" resultType="com.zlz.website.blog.common.dos.BlogDO">
+        SELECT
+        b.id, b.user_id, b.title, b.provenance, b.img_src, b.is_publish, b.stars, b.readings,
+        b.is_deleted, b.creator, b.operator, b.created_time, b.modified_time
+        FROM blog b
+        <where>
+            b.title LIKE CONCAT('%',#{params.title},'%')
+            OR
 
-  </select>
+            EXISTS (
+            SELECT
+            1
+            FROM
+            blog_content bc
+            WHERE bc.blog_id = b.id AND is_deleted = 0 AND bc.content_md LIKE CONCAT('%',#{params.title},'%')
+            )
+            OR
+
+            EXISTS (
+            SELECT
+            1
+            FROM
+            blog_category_relation bcr
+            RIGHT JOIN category `c`
+            ON bcr.cate_id = `c`.id
+            WHERE blog_id = b.id AND title LIKE CONCAT('%',#{params.title},'%')
+            )
+            OR
+
+            EXISTS (
+            SELECT
+            1
+            FROM
+            blog_tag_relation btr
+            RIGHT JOIN tag t
+            ON btr.tag_id = t.id
+            WHERE blog_id = b.id AND title CONCAT('%',#{params.title},'%')
+            )
+
+        </where>
+    </select>
 </mapper>
