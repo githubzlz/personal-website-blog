@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlz.website.blog.category.mapper.CategoryRelMapper">
+  <resultMap id="BaseResultMap" type="com.zlz.website.blog.common.dos.BlogCategoryRelDO">
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="parent_id" jdbcType="BIGINT" property="cateId"/>
+    <result column="parent_id" jdbcType="BIGINT" property="blogId"/>
+    <result column="parent_id" jdbcType="BIGINT" property="cateId"/>
+    <result column="creator" jdbcType="BIGINT" property="creator"/>
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cate_id, blog_id, creator, created_time
+  </sql>
+
+  <insert id="insertList" keyColumn="id" keyProperty="id">
+    INSERT INTO blog_category_relation
+    <include refid="Base_Column_List" />
+    VALUES
+    <foreach collection="rels" item="rel" separator="," open="(" close=")">
+      #{rel.id},#{rel.cateId},#{rel.blogId},#{rel.creator},#{rel.created_time}
+    </foreach>
+  </insert>
+</mapper>

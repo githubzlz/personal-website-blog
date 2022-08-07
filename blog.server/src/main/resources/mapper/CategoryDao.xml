@@ -220,4 +220,13 @@
     ORDER BY level_code DESC
     LIMIT 1
   </select>
+
+  <select id="countByCateId">
+    SELECT count(1)
+    FROM category
+    WHERE id IN
+    <foreach collection="cateIds" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </select>
 </mapper>

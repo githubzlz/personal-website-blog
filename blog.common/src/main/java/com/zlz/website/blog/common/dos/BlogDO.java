@@ -33,6 +33,11 @@ public class BlogDO implements Serializable {
     private String title;
 
     /**
+     * 摘要
+     */
+    private String summary;
+
+    /**
      * 出处：0原创 1转载 2翻译
      */
     private Integer provenance;

@@ -38,13 +38,22 @@ public class BlogController {
         return blogService.modifyBlog(req);
     }
 
+    @PostMapping("/update/publish")
+    public ResultSet<Long> updatePublish(@RequestBody BlogEditReq req) {
+        // 新增
+        if (Objects.isNull(req.getId()) || BasicConstants.ZERO_LONG.equals(req.getId())) {
+            return ResultSet.error("修改发布状态失败");
+        }
+        return blogService.updatePublish(req);
+    }
+
     @PostMapping("/query/list")
     public ResultSet<List<BlogDTO>> queryList(@RequestBody BlogListQueryReq req) {
         return blogService.queryList(req);
     }
 
-    @PostMapping("/delete/soft")
-    public ResultSet<Boolean> deleteBlog(@RequestParam("id")Long id) {
+    @GetMapping("/delete/soft/{id}")
+    public ResultSet<Boolean> deleteBlog(@PathVariable Long id) {
         // 删除
         return blogService.softDeleteBlog(id);
     }

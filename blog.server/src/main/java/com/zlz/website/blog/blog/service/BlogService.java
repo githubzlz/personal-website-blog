@@ -2,10 +2,8 @@ package com.zlz.website.blog.blog.service;
 
 import com.zlz.basic.response.ResultSet;
 import com.zlz.website.blog.common.dtos.BlogDTO;
-import com.zlz.website.blog.common.param.BlogParam;
 import com.zlz.website.blog.common.req.blog.BlogEditReq;
 import com.zlz.website.blog.common.req.blog.BlogListQueryReq;
-import com.zlz.website.blog.common.resp.blog.BlogSimpleResp;
 
 import java.util.List;
 
@@ -54,4 +52,10 @@ public interface BlogService {
      */
     ResultSet<Boolean> deleteBlog(Long blogId);
 
+    /**
+     * 修改文章状态
+     * @param req
+     * @return
+     */
+    ResultSet<Long> updatePublish(BlogEditReq req);
 }

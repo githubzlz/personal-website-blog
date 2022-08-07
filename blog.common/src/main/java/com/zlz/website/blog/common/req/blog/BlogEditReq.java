@@ -24,6 +24,12 @@ public class BlogEditReq {
     private String title;
 
     /**
+     * 文章名
+     */
+    @NotNull(message = "文章摘要不允许为空", groups = Create.class)
+    private String summary;
+
+    /**
      * 出处：0原创 1转载 2翻译
      */
     private Integer provenance;

@@ -34,14 +34,21 @@ public class BlogServiceImpl implements BlogService {
     private final BlogMapper blogMapper;
     private final BlogContentMapper blogContentMapper;
 
+//    private final CategoryService categoryService;
+
     public BlogServiceImpl(BlogMapper blogMapper, BlogContentMapper blogContentMapper) {
         this.blogMapper = blogMapper;
         this.blogContentMapper = blogContentMapper;
+//        this.categoryBlogManageService = categoryBlogManageService;
     }
 
     @Override
     public ResultSet<List<BlogDTO>> queryList(BlogListQueryReq req) {
+        req.getParams().setCreator(TraceContext.getUserId());
         List<BlogDO> blogDOS;
+        if(!DeletedStatusEnum.DELETED.getCode().equals(req.getParams().getIsDeleted())){
+            req.getParams().setIsDeleted(DeletedStatusEnum.NOT_DELETED.getCode());
+        }
         if (StringUtils.isNotEmpty(req.getParams().getAll())) {
             blogDOS = blogMapper.selectListByParamAll(req.getParams(), req.getPageInfo());
         } else {
@@ -63,6 +70,8 @@ public class BlogServiceImpl implements BlogService {
             blogContent.setContentMd(req.getBlogContent().getContent());
         }
         blogContentMapper.insert(blogContent);
+
+//        categoryBlogManageService.getBlogByTagIds()
         return ResultSet.success(blog.getId());
     }
 
@@ -122,6 +131,18 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public ResultSet<Boolean> deleteBlog(Long blogId) {
         int i = blogMapper.deleteById(blogId);
+        if (BasicConstants.ZERO_INTEGER.equals(i)) {
+            return ResultSet.error();
+        }
+        return ResultSet.success();
+    }
+
+    @Override
+    public ResultSet<Long> updatePublish(BlogEditReq req) {
+        BlogDO blogDO = new BlogDO();
+        blogDO.setId(req.getId());
+        blogDO.setIsPublish(req.getIsPublish());
+        int i = blogMapper.updateById(blogDO);
         if (BasicConstants.ZERO_INTEGER.equals(i)) {
             return ResultSet.error();
         }

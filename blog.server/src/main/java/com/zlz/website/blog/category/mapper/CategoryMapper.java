@@ -28,4 +28,6 @@ public interface CategoryMapper extends BaseMapper<CategoryDO> {
                                 @Param("userId") Long userId);
 
     CategoryDO selectFirstLevel();
+
+    int countByCateId(List<Long> cateIds);
 }

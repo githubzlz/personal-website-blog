@@ -7,7 +7,9 @@ import com.zlz.basic.response.ResultSet;
 import com.zlz.basic.response.TreeNode;
 import com.zlz.basic.trace.TraceContext;
 import com.zlz.website.blog.category.mapper.CategoryMapper;
+import com.zlz.website.blog.category.mapper.CategoryRelMapper;
 import com.zlz.website.blog.category.service.CategoryService;
+import com.zlz.website.blog.common.dos.BlogCategoryRelDO;
 import com.zlz.website.blog.common.dos.CategoryDO;
 import com.zlz.website.blog.common.dtos.CategoryDTO;
 import com.zlz.website.blog.common.exception.BlogBizException;
@@ -34,8 +36,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
 
-    public CategoryServiceImpl(CategoryMapper categoryMapper) {
+    private final CategoryRelMapper categoryRelMapper;
+
+    public CategoryServiceImpl(CategoryMapper categoryMapper, CategoryRelMapper categoryRelMapper) {
         this.categoryMapper = categoryMapper;
+        this.categoryRelMapper = categoryRelMapper;
     }
 
     @Override
@@ -121,6 +126,38 @@ public class CategoryServiceImpl implements CategoryService {
         categoryDO.setLastModifiedTime(new Date());
         categoryMapper.updateById(categoryDO);
         return ResultSet.success(id);
+    }
+
+    @Override
+    public boolean addCategoryRel(Long blogId, List<Long> cateIds) {
+
+        if (CollectionUtils.isEmpty(cateIds)) {
+            return false;
+        }
+
+        // 检查分类是否存在
+        int num = categoryMapper.countByCateId(cateIds);
+        if (num != cateIds.size()) {
+            return false;
+        }
+
+        Date now = new Date();
+        Long creatorId = TraceContext.getUserId();
+        List<BlogCategoryRelDO> rels = cateIds.stream().map(cateId -> {
+            BlogCategoryRelDO blogCategoryRelDO = new BlogCategoryRelDO();
+            blogCategoryRelDO.setBlogId(blogId);
+            blogCategoryRelDO.setCateId(cateId);
+            blogCategoryRelDO.setCreatedTime(now);
+            blogCategoryRelDO.setCreator(creatorId);
+            return blogCategoryRelDO;
+        }).collect(Collectors.toList());
+        categoryRelMapper.insertList(rels);
+        return true;
+    }
+
+    @Override
+    public boolean removeCategoryRel(Long blogId, List<Long> cateId) {
+        return false;
     }
 
     private ResultSet<Long> doUpdateCategory(CategoryDO categoryDO) {

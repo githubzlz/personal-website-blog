@@ -11,7 +11,7 @@ import lombok.Data;
 @Builder
 public class DatePairDTO {
 
-    private Long startDate;
+    private Long startTime;
 
-    private Long endDate;
+    private Long endTime;
 }

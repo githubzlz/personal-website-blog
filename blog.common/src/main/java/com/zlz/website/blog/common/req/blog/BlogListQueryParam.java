@@ -24,4 +24,9 @@ public class BlogListQueryParam {
 
     private DatePairDTO date;
 
+
+    private Long creator;
+
+    private Integer isDeleted;
+
 }

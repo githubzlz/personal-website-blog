@@ -19,21 +19,27 @@
     </resultMap>
     <sql id="Base_Column_List">
         id
-        , user_id, title, provenance, img_src, is_publish, stars, readings,
+        , user_id, title, summary, provenance, img_src, is_publish, stars, readings,
     is_deleted, creator, `operator`, created_time, modified_time
     </sql>
 
     <select id="selectListByParams" resultType="com.zlz.website.blog.common.dos.BlogDO">
         SELECT
-        b.id, b.user_id, b.title, b.provenance, b.img_src, b.is_publish, b.stars, b.readings,
+        b.id, b.user_id, b.title, b.summary,b.provenance, b.img_src, b.is_publish, b.stars, b.readings,
         b.is_deleted, b.creator, b.operator, b.created_time, b.modified_time
         FROM blog b
         <where>
-            <if test="params.title != null and params.title != '' ">
-                b.title LIKE #{params.title}
+            <if test="params.creator != null">
+                b.creator = #{params.creator}
             </if>
-            <if test="params.date != null">
-                AND b.modified_time BETWEEN #{params.date.startDate} AND #{params.date.endDate}
+            <if test="params.isDeleted != null">
+                AND b.is_deleted = #{params.isDeleted}
+            </if>
+            <if test="params.title != null and params.title != '' ">
+                AND b.title LIKE CONCAT('%',#{params.title},'%')
+            </if>
+            <if test="params.date != null and params.date.startTime != null and params.date.endTime != null">
+                AND b.modified_time BETWEEN #{params.date.startTime} AND #{params.date.startTime}
             </if>
             <if test="params.provenance != null">
                 AND b.provenance = #{params.provenance}
@@ -67,11 +73,17 @@
 
     <select id="selectListByParamAll" resultType="com.zlz.website.blog.common.dos.BlogDO">
         SELECT
-        b.id, b.user_id, b.title, b.provenance, b.img_src, b.is_publish, b.stars, b.readings,
+        b.id, b.user_id, b.title, b.summary, b.provenance, b.img_src, b.is_publish, b.stars, b.readings,
         b.is_deleted, b.creator, b.operator, b.created_time, b.modified_time
         FROM blog b
         <where>
-            b.title LIKE CONCAT('%',#{params.title},'%')
+            <if test="params.creator != null">
+                b.creator = #{params.creator}
+            </if>
+            <if test="params.isDeleted != null">
+                AND b.is_deleted = #{params.isDeleted}
+            </if>
+            (b.title LIKE CONCAT('%',#{params.title},'%')
             OR
 
             EXISTS (
@@ -102,7 +114,7 @@
             RIGHT JOIN tag t
             ON btr.tag_id = t.id
             WHERE blog_id = b.id AND title CONCAT('%',#{params.title},'%')
-            )
+            ))
 
         </where>
     </select>

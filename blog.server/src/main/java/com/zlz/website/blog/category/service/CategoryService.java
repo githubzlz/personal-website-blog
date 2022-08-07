@@ -2,9 +2,8 @@ package com.zlz.website.blog.category.service;
 
 import com.zlz.basic.response.ResultSet;
 import com.zlz.basic.response.TreeNode;
-import com.zlz.website.blog.common.dos.CategoryDO;
-import com.zlz.website.blog.common.req.category.CategoryQueryReq;
 import com.zlz.website.blog.common.dtos.CategoryDTO;
+import com.zlz.website.blog.common.req.category.CategoryQueryReq;
 import com.zlz.website.blog.common.req.category.CategoryUpdateReq;
 
 import java.util.List;
@@ -42,4 +41,20 @@ public interface CategoryService {
      * @return
      */
     ResultSet<Long> softDeleteCategory(Long id);
+
+    /**
+     * 添加文章与分类的关联
+     * @param blogId
+     * @param cateIds
+     * @return
+     */
+    boolean addCategoryRel(Long blogId, List<Long> cateIds);
+
+    /**
+     * 删除文章与分类的关联
+     * @param blogId
+     * @param cateIds
+     * @return
+     */
+    boolean removeCategoryRel(Long blogId, List<Long> cateIds);
 }
